@@ -2,6 +2,8 @@ package com.example.planahead_capstone;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -82,13 +83,19 @@ public class EventCreationActivity extends AppCompatActivity {
                 String eventTime = textViewEventTime.getText().toString();
                 String eventBudget = editTextEventBudget.getText().toString();
 
-                // TODO: Validate input values and save the event to the database or perform desired actions
+                // Save the event details to the database
+                boolean eventSaved = saveEventToDatabase(eventName, eventLocation, eventDate, eventTime, eventBudget);
 
-                // Show a toast message to indicate successful event creation
-                Toast.makeText(EventCreationActivity.this, "Event created: " + eventName, Toast.LENGTH_SHORT).show();
+                if (eventSaved) {
+                    // Show a toast message to indicate successful event creation
+                    Toast.makeText(EventCreationActivity.this, "Event created: " + eventName, Toast.LENGTH_SHORT).show();
 
-                // Finish the activity and go back to the previous screen
-                finish();
+                    // Finish the activity and go back to the previous screen
+                    finish();
+                } else {
+                    // Show a toast message indicating a failure in saving the event
+                    Toast.makeText(EventCreationActivity.this, "Failed to save the event", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -109,32 +116,49 @@ public class EventCreationActivity extends AppCompatActivity {
         };
     }
 
+    private boolean saveEventToDatabase(String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("event_name", eventName);
+        values.put("event_location", eventLocation);
+        values.put("event_date", eventDate);
+        values.put("event_time", eventTime);
+        values.put("event_budget", eventBudget);
+
+        long result = db.insert("events", null, values);
+        db.close();
+
+        return result != -1;
+    }
+
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, year, month, dayOfMonth);
         datePickerDialog.show();
+    }
+
+    private void updateDate(int year, int month, int dayOfMonth) {
+        String selectedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", month + 1, dayOfMonth, year);
+        textViewEventDate.setText(selectedDate);
     }
 
     private void showTimePicker() {
         Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, timePickerListener, hour, minute, false);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, timePickerListener, hourOfDay, minute, false);
         timePickerDialog.show();
     }
 
-    private void updateDate(int year, int month, int day) {
-        String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", month + 1, day, year);
-        textViewEventDate.setText(formattedDate);
-    }
-
-    private void updateTime(int hour, int minute) {
-        String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hour, minute);
-        textViewEventTime.setText(formattedTime);
+    private void updateTime(int hourOfDay, int minute) {
+        String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+        textViewEventTime.setText(selectedTime);
     }
 }

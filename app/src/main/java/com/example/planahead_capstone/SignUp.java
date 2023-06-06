@@ -1,45 +1,37 @@
 package com.example.planahead_capstone;
 
-import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.planahead_capstone.DatabaseHelper;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SignUp extends AppCompatActivity {
-    Button signUp,signIn;
-    ImageView logo;
-    TextView slogan,text;
-    TextInputLayout username,password,cpassword;
+    Button signUp, signIn;
+    TextInputLayout username, password, cpassword;
+    DatabaseHelper databaseHelper;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up);
 
+        databaseHelper = new DatabaseHelper(this);
 
         signUp = findViewById(R.id.signup);
         signIn = findViewById(R.id.login);
-        logo = findViewById(R.id.logoImage);
-        text = findViewById(R.id.logoName);
-        slogan = findViewById(R.id.slogan);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         cpassword = findViewById(R.id.repassword);
-
-
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,49 +40,44 @@ public class SignUp extends AppCompatActivity {
                 String pwd = password.getEditText().getText().toString().trim();
                 String cnf_pwd = cpassword.getEditText().getText().toString().trim();
 
-                // check cnf password and register
-
-                if(user.equals("") || pwd.equals("") || cnf_pwd.equals("")){
-                    Toast.makeText(SignUp.this, "Please Fill the form", Toast.LENGTH_SHORT).show();
-                }
-                else {
-
+                if (user.isEmpty() || pwd.isEmpty() || cnf_pwd.isEmpty()) {
+                    Toast.makeText(SignUp.this, "Please fill the form", Toast.LENGTH_SHORT).show();
+                } else {
                     if (pwd.equals(cnf_pwd)) {
-                            Toast.makeText(SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                            Intent moveToLogin = new Intent(SignUp.this, Login.class);
-                            startActivity(moveToLogin);
-
-
+                        boolean success = registerUser(user, pwd);
+                        if (success) {
+                            Toast.makeText(SignUp.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignUp.this, Login.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(SignUp.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(SignUp.this, "Please enter Same Password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUp.this, "Please enter the same password", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
 
-
-
-
-
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignUp.this,Login.class);
-                Pair[] pairs = new Pair[7];
-                pairs[0] = new Pair<View,String>(logo,"logo_image");
-                pairs[1] = new Pair<View,String>(text,"logo_text");
-                pairs[2] = new Pair<View,String>(slogan,"slogan");
-                pairs[3] = new Pair<View,String>(username,"username");
-                pairs[4] = new Pair<View,String>(password,"password");
-                pairs[5] = new Pair<View,String>(signUp,"main");
-                pairs[6] = new Pair<View,String>(signIn,"sub");
-
-                ActivityOptions options = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    options = ActivityOptions.makeSceneTransitionAnimation(SignUp.this,pairs);
-                }
-                startActivity(intent,options.toBundle());
+                Intent intent = new Intent(SignUp.this, Login.class);
+                startActivity(intent);
             }
         });
+    }
+
+    private boolean registerUser(String username, String password) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("username", username);
+        values.put("password", password);
+
+        long result = db.insert("users", null, values);
+        db.close();
+
+        return result != -1;
     }
 }
