@@ -10,9 +10,19 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent" />
+
+    <!-- Upcoming Events RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/upcomingEventsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottomNavigationView"
+        android:background="@android:color/white"
+        android:padding="16dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_upcoming_event" />
 
     <!-- Bottom NavigationView -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

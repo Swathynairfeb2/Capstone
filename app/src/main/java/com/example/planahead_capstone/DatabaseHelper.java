@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanAhead.db";
     private static final int DATABASE_VERSION = 1;
@@ -72,41 +75,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return eventId;
-    }
-
-    public void updateEvent(long eventId, String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENT_NAME, eventName);
-        values.put(COLUMN_EVENT_LOCATION, eventLocation);
-        values.put(COLUMN_EVENT_DATE, eventDate);
-        values.put(COLUMN_EVENT_TIME, eventTime);
-        values.put(COLUMN_EVENT_BUDGET, eventBudget);
-
-        String whereClause = COLUMN_EVENT_ID + " = ?";
-        String[] whereArgs = {String.valueOf(eventId)};
-
-        db.update(TABLE_EVENTS, values, whereClause, whereArgs);
-        db.close();
-    }
-
-    public void deleteEvent(long eventId) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        String whereClause = COLUMN_EVENT_ID + " = ?";
-        String[] whereArgs = {String.valueOf(eventId)};
-
-        db.delete(TABLE_EVENTS, whereClause, whereArgs);
-        db.close();
-    }
-
-    public Cursor getAllEvents() {
-        SQLiteDatabase db = getReadableDatabase();
-
-        String[] columns = {COLUMN_EVENT_ID, COLUMN_EVENT_NAME, COLUMN_EVENT_LOCATION, COLUMN_EVENT_DATE, COLUMN_EVENT_TIME, COLUMN_EVENT_BUDGET};
-        String orderBy = COLUMN_EVENT_ID + " ASC";
-
-        return db.query(TABLE_EVENTS, columns, null, null, null, null, orderBy);
     }
 }
