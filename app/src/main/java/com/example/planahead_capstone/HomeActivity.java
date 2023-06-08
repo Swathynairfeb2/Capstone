@@ -58,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
                             break;
                         case R.id.menu_my_events:
                             // Start the EventCreationActivity
-                            intent = new Intent(HomeActivity.this, EventCreationActivity.class);
+                            intent = new Intent(HomeActivity.this, EventDetailPage.class);
                             startActivity(intent);
                             break;
                         case R.id.menu_my_account:

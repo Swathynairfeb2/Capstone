@@ -52,7 +52,10 @@
         <activity android:name=".HomeActivity"></activity>
         <activity android:name=".EventCreationActivity"></activity>
         <activity android:name=".CategoryActivity"></activity>
-
+        <activity android:name=".EventDetailPage"></activity>
+        <activity android:name=".AddTaskActivity"></activity>
+        <activity android:name="TodoTaskAdapter"></activity>
+        <activity android:name=".TodoListActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

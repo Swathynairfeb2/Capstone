@@ -10,6 +10,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     private Button buttonBirthday;
     private Button buttonBaptism;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
