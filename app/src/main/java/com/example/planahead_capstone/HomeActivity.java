@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(MenuItem item) {
                     Fragment selectedFragment = null;
+                    Intent intent;
 
                     switch (item.getItemId()) {
                         case R.id.menu_home:
@@ -52,11 +53,12 @@ public class HomeActivity extends AppCompatActivity {
                             break;
                         case R.id.menu_categories:
                             // Handle the categories action
-                            Toast.makeText(HomeActivity.this, "Categories", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(HomeActivity.this, CategoryActivity.class);
+                            startActivity(intent);
                             break;
                         case R.id.menu_my_events:
                             // Start the EventCreationActivity
-                            Intent intent = new Intent(HomeActivity.this, EventCreationActivity.class);
+                            intent = new Intent(HomeActivity.this, EventCreationActivity.class);
                             startActivity(intent);
                             break;
                         case R.id.menu_my_account:

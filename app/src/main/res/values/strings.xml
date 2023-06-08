@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PlanAhead_Capstone</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="location_icon_description">location_icon_description</string>
+    <string name="birthday">BIRTHDAY</string>
+    <string name="wedding">WEDDING</string>
+    <string name="baptism">BAPTISM</string>
+    <string name="categoryheading">EVENT CATEGORIES</string>
+
 </resources>
