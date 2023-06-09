@@ -52,7 +52,7 @@
         <activity android:name=".HomeActivity"></activity>
         <activity android:name=".EventCreationActivity"></activity>
         <activity android:name=".CategoryActivity"></activity>
-
+        <activity android:name=".EventsActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
