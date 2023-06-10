@@ -59,7 +59,7 @@ public class EventsActivity extends AppCompatActivity {
         while (cursor.moveToNext()) {
             String eventName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_NAME));
             String eventDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_DATE));
-            UpcomingEvent event = new UpcomingEvent(eventName, eventDate, R.drawable.smart_view1);
+            UpcomingEvent event = new UpcomingEvent(eventName, eventDate, R.drawable.group_1);
             // Create an UpcomingEvent object with only name and date
 
             upcomingEvents.add(event);

@@ -4,13 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/purpleb">
+<!--Title-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Event Creation"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
 
     <!-- Event Name -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
         android:text="Event Name"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -20,6 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:hint="Enter Event Name" />
 
     <!-- Spacing -->
@@ -32,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
         android:text="Event Location"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -46,6 +63,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:fontFamily="@font/alegreya_italic"
             android:hint="Enter Event Location" />
 
@@ -68,6 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
         android:text="Event Date"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -82,6 +102,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:fontFamily="@font/alegreya_italic"
             android:hint="Enter Event Date" />
 
@@ -104,6 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
         android:text="Event Time"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -118,6 +141,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:fontFamily="@font/alegreya_italic"
             android:hint="Enter Event Time" />
 
@@ -140,6 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
         android:text="Event Budget"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -156,6 +182,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/alegreya_italic"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:hint="Enter Event Budget" />
 
     </LinearLayout>
@@ -171,7 +199,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:backgroundTint="#0F9CD7"
+        android:backgroundTint="@color/peachbutton"
+        android:textColor="@color/white"
         android:fontFamily="@font/alegreya_italic"
         android:text="Create Event"
         android:textSize="20sp"

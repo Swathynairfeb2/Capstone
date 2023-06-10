@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/purpleb"
+    android:orientation="horizontal">
+
+    <!-- First Category -->
+    <LinearLayout
+        android:id="@+id/categoryLinearLayout"
+        android:layout_width="170dp"
+        android:layout_height="185dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+    android:background="@drawable/group_1"
+    android:orientation="vertical"
+        android:gravity="bottom|center_horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/categoryNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="category Name 1"
+        android:fontFamily="@font/alegreya_italic"
+        android:gravity="bottom|center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Category details -->
+</LinearLayout>
+
+<Space
+android:layout_width="8dp"
+android:layout_height="wrap_content" /> <!-- Add the space element here -->
+
+    </LinearLayout>

@@ -1,21 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- item_event.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/eventName"
+    <!-- First Row -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/taskRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        <!-- First Event -->
+        <LinearLayout
+            android:id="@+id/eventLinearLayout1"
+            android:layout_width="170dp"
+            android:layout_height="185dp"
+            android:layout_weight="1"
+            android:background="@drawable/group_1"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom|center_horizontal"> <!-- Set gravity to bottom and center_horizontal -->
+
+
+                <TextView
+                    android:id="@+id/eventNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Event Name 1"
+                    android:gravity="bottom|center_horizontal"
+                    android:fontFamily="@font/alegreya_italic"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/eventDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom|center_horizontal"
+                    android:text="Event Date 1"
+                    android:fontFamily="@font/alegreya_italic"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <!-- Add any additional event details here -->
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Space after the first event row -->
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content" />
+
+        <!-- Second Event -->
+        <LinearLayout
+            android:id="@+id/eventLinearLayout2"
+            android:layout_width="170dp"
+            android:layout_height="185dp"
+            android:layout_weight="1"
+            android:background="@drawable/group_2"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom|center_horizontal"> <!-- Set gravity to bottom and center_horizontal -->
+
+                <TextView
+                    android:id="@+id/eventNameTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Event Name 2"
+                    android:fontFamily="@font/alegreya_italic"
+                    android:textColor="@android:color/white"
+                    android:gravity="bottom|center_horizontal"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/eventDateTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Event Date 2"
+                    android:fontFamily="@font/alegreya_italic"
+                    android:textColor="@android:color/white"
+                    android:gravity="bottom|center_horizontal"
+                    android:textSize="14sp" />
+
+                <!-- Add any additional event details here -->
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Second Row -->
+    <!-- Repeat the same layout for the second row -->
 
 </LinearLayout>

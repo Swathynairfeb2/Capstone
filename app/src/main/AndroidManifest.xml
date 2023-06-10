@@ -53,6 +53,7 @@
         <activity android:name=".EventCreationActivity"></activity>
         <activity android:name=".CategoryActivity"></activity>
         <activity android:name=".EventsActivity"></activity>
+        <activity android:name=".EventDetailPage"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

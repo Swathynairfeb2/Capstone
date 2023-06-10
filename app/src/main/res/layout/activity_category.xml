@@ -1,86 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_splash"
+    android:background="@color/purpleb"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
     tools:context=".CategoryActivity">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:background="@drawable/wedding"
-        android:shadowColor="#000000"
-        android:shadowDx="3.4"
-        android:shadowDy="3.0"
-        android:shadowRadius="5"
-        android:text="@string/wedding"
-        android:textColor="#fff"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.265" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:background="@drawable/birthday"
-        android:shadowColor="#000000"
-        android:shadowDx="3.4"
-        android:shadowDy="3.0"
-        android:shadowRadius="5"
-        android:text="@string/birthday"
-        android:textColor="#fff"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:background="@drawable/baptsm"
-        android:shadowColor="#000000"
-        android:shadowDx="3.4"
-        android:shadowDy="3.0"
-        android:shadowRadius="5"
-        android:text="@string/baptism"
-        android:textColor="#fff"
-        android:textSize="20dp"
-        android:textStyle="bold"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.685" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <!-- Add icon and heading -->
+    <RelativeLayout
+        android:id="@+id/addCategoryLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/categoryheading"
-        android:textColor="#040227"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.078" />
+        android:gravity="center_vertical">
 
+        <TextView
+            android:id="@+id/categoryHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Categories"
+            android:fontFamily="@font/alegreya_italic"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:paddingStart="8dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/addCategoryImageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/icon_plus"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/addCategoryLayout"
+        android:background="@color/purpleb"
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
+
+</RelativeLayout>

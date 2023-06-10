@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/purpleb"
     android:padding="20dp"
     tools:context=".SignUp">
 
@@ -14,8 +15,9 @@
         android:id="@+id/logoName"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:transitionName="logo_text"
+        android:fontFamily="@font/alegreya_italic"
         android:text="Welcome"
         android:textSize="40sp" />
 
@@ -23,6 +25,8 @@
         android:id="@+id/slogan"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:fontFamily="@font/alegreya_italic"
         android:text="SignUp to Plan Your Events"
         android:textSize="15sp"
         android:transitionName="slogan" />
@@ -37,9 +41,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:textColorHint="@color/white"
             android:id="@+id/username"
             app:counterMaxLength="15"
+            android:fontFamily="@font/alegreya_italic"
             android:hint="Username"
+
             android:transitionName="username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -50,6 +58,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/password"
+
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/alegreya_italic"
             android:hint="Password"
             android:transitionName="password"
             app:passwordToggleEnabled="true"
@@ -63,19 +74,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/repassword"
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/alegreya_italic"
             android:hint="Confirm Password"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
+                android:fontFamily="@font/alegreya_italic"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#000000"
+            android:fontFamily="@font/alegreya_italic"
+            android:backgroundTint="@color/peachbutton"
             android:textColor="@color/white"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
@@ -85,9 +100,10 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_italic"
             android:layout_gravity="right"
-            android:backgroundTint="@color/white"
-            android:textColor="#000000"
+            android:backgroundTint="@color/peachbutton"
+            android:textColor="@color/white"
             android:transitionName="sub"
             android:textSize="10sp"
             android:text="Already have an account? SignIn now"/>
