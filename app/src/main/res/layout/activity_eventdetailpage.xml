@@ -20,6 +20,46 @@
 <!--</LinearLayout>-->
 
 
+<!--<RelativeLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:padding="20dp"-->
+<!--    android:background="@color/purpleb"-->
+<!--    tools:context=".EventDetailPage">-->
+
+<!--    &lt;!&ndash; ImageView 1 &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/budgetImageView"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:src="@drawable/icon_budget"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_alignParentEnd="true" />-->
+
+<!--    &lt;!&ndash; ImageView 2 &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/toDoImageView"-->
+<!--        android:layout_width="38dp"-->
+<!--        android:layout_height="38dp"-->
+<!--        android:src="@drawable/icon_todo"-->
+<!--        android:layout_toLeftOf="@id/budgetImageView"-->
+<!--        android:layout_alignTop="@id/budgetImageView"-->
+<!--        android:layout_marginRight="16dp" />-->
+
+<!--    &lt;!&ndash; TextView for invitation content &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/invitationTextView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/budgetImageView"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textColor="@android:color/white" />-->
+
+<!--</RelativeLayout>-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -48,5 +88,72 @@
         android:layout_toLeftOf="@id/budgetImageView"
         android:layout_alignTop="@id/budgetImageView"
         android:layout_marginRight="16dp" />
+
+    <!-- TextView for invitation content -->
+    <TextView
+        android:id="@+id/invitationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/budgetImageView"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/white" />
+
+    <!-- Event Details Container -->
+    <LinearLayout
+        android:id="@+id/eventDetailsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/invitationTextView"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <!-- Event Name -->
+        <TextView
+            android:id="@+id/eventNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:text="Event Name" />
+
+        <!-- Event Location -->
+        <TextView
+            android:id="@+id/eventLocationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:text="Event Location" />
+
+        <!-- Event Date -->
+        <TextView
+            android:id="@+id/eventDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:text="Event Date" />
+
+        <!-- Event Time -->
+        <TextView
+            android:id="@+id/eventTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:text="Event Time" />
+
+
+        <TextView
+            android:id="@+id/eventBudgetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:text="Event Budget" />
+
+    </LinearLayout>
 
 </RelativeLayout>
