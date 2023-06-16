@@ -3,19 +3,22 @@ package com.example.planahead_capstone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EventDetailPage extends AppCompatActivity {
+    private ImageView addTaskImage;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
+
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_eventdetailpage);
+            addTaskImage=findViewById(R.id.toDoImageView);
 
-            Button todoButton = findViewById(R.id.todoButton);
-            todoButton.setOnClickListener(new View.OnClickListener() {
+            addTaskImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openTodoListPage();
