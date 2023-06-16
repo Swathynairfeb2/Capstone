@@ -3,21 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:fontFamily="@font/alegreya_italic"
+    android:background="@color/purpleb">
 
     <CheckBox
         android:id="@+id/taskCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:buttonTint="@color/peachbutton"/>
 
     <TextView
         android:id="@+id/taskNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:textColor="@android:color/black"
+        android:fontFamily="@font/alegreya_italic"
+    android:layout_marginStart="16dp"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
 
 </LinearLayout>
