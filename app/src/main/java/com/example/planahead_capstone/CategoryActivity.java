@@ -2,14 +2,19 @@ package com.example.planahead_capstone;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,10 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         setContentView(R.layout.activity_category);
 
         categoryDBHelper = new DatabaseHelper(this);
+
+        // Bottom Navigation View
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
 
         categoryList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(categoryList);
@@ -109,4 +118,39 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         intent.putExtra("categoryId", category.getId()); // Pass the category ID
         startActivity(intent);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    Fragment selectedFragment = null;
+                    Intent intent;
+
+                    switch (item.getItemId()) {
+                        case R.id.menu_home:
+                            // Handle the home action
+                            intent = new Intent(CategoryActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_categories:
+                            // Handle the categories action
+                            intent = new Intent(CategoryActivity.this, CategoryActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_my_events:
+                            // Start the EventCreationActivity
+                            intent = new Intent(CategoryActivity.this, EventsActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_my_account:
+                            // Handle the my account action
+                            Toast.makeText(CategoryActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+
+                    return true;
+                }
+            };
 }
+
+

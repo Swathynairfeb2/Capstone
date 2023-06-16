@@ -1,12 +1,18 @@
 package com.example.planahead_capstone;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,4 +85,36 @@ public class EventsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+    private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    Fragment selectedFragment = null;
+                    Intent intent;
+
+                    switch (item.getItemId()) {
+                        case R.id.menu_home:
+                            // Handle the home action
+                            intent = new Intent(EventsActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_categories:
+                            // Handle the categories action
+                            intent = new Intent(EventsActivity.this, CategoryActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_my_events:
+                            // Start the EventCreationActivity
+                            intent = new Intent(EventsActivity.this, EventsActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_my_account:
+                            // Handle the my account action
+                            Toast.makeText(EventsActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+
+                    return true;
+                }
+            };
 }
