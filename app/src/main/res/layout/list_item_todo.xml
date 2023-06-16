@@ -2,26 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp"
+    android:background="@color/purpleb"
     android:fontFamily="@font/alegreya_italic"
-    android:background="@color/purpleb">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <CheckBox
         android:id="@+id/taskCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:buttonTint="@color/peachbutton"/>
+        android:buttonTint="@color/peachbutton" />
 
     <TextView
         android:id="@+id/taskNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/alegreya_italic"
-    android:layout_marginStart="16dp"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:backgroundTint="@color/peachbutton"
+        android:fontFamily="@font/alegreya_italic"
+        android:text="delete"
+        android:textColor="@color/white" />
 </LinearLayout>
+
+
+

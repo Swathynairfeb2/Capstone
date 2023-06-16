@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
+    android:background="@color/purpleb"
     tools:context=".EventDetailPage">
     <Button
         android:id="@+id/todoButton"
@@ -15,6 +16,6 @@
         android:fontFamily="@font/alegreya_italic"
         android:text="Todo"
         android:onClick="openTodoListPage"
-        />
+        android:backgroundTint="@color/peachbutton"/>
 
 </LinearLayout>
