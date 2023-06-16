@@ -1,22 +1,4 @@
-package com.example.planahead_capstone;//package com.example.planahead_capstone;
-//
-//public class Category {
-//    private int id;
-//    private String categoryName;
-//
-//    public Category(int id, String categoryName) {
-//        this.id = id;
-//        this.categoryName = categoryName;
-//    }
-//
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public String getCategoryName() {
-//        return categoryName;
-//    }
-//}
+package com.example.planahead_capstone;
 import java.io.Serializable;
 
 public class Category implements Serializable {
@@ -33,6 +15,11 @@ public class Category implements Serializable {
     }
 
     public String getCategoryName() {
+        return categoryName;
+    }
+
+    @Override
+    public String toString() {
         return categoryName;
     }
 }

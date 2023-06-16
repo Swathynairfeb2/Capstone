@@ -13,12 +13,7 @@ public class EventDetailPage extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_eventdetailpage);
-            String eventName;
-            Intent intent = getIntent();
-            if ( intent.hasExtra("eventName") && intent.hasExtra("eventDate")) {
-                 eventName = intent.getStringExtra("eventName");
-                String eventDate = intent.getStringExtra("eventDate");
-            }
+
             Button todoButton = findViewById(R.id.todoButton);
             todoButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ public class TodoListActivity extends Activity {
 
     private ListView todoListView;
     private Button addTaskButton;
+
     private List<TodoTask> tasks;
     private TodoTaskAdapter adapter;
 
@@ -28,6 +30,7 @@ public class TodoListActivity extends Activity {
 
         todoListView = findViewById(R.id.todoListView);
         addTaskButton = findViewById(R.id.addTaskButton);
+
         tasks = new ArrayList<>();
 
         adapter = new TodoTaskAdapter(this, tasks);
