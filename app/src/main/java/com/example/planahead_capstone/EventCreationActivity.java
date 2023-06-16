@@ -1,15 +1,17 @@
 package com.example.planahead_capstone;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class EventCreationActivity extends AppCompatActivity {
@@ -31,6 +34,12 @@ public class EventCreationActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener datePickerListener;
     private TimePickerDialog.OnTimeSetListener timePickerListener;
 
+    private Spinner spinnerEventCategory;
+    private DatabaseHelper databaseHelper;
+    private List<Category> categoryList;
+    private ArrayAdapter<Category> categoryAdapter;
+    private int selectedCategoryId = -1; // Default value for no category selected
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +52,12 @@ public class EventCreationActivity extends AppCompatActivity {
         textViewEventTime = findViewById(R.id.textViewEventTime);
         editTextEventBudget = findViewById(R.id.editTextEventBudget);
         buttonCreateEvent = findViewById(R.id.buttonCreateEvent);
+        spinnerEventCategory = findViewById(R.id.spinnerEventCategory);
 
         // Set click listeners for the picker icons
         ImageView imageViewLocationIcon = findViewById(R.id.imageViewLocationIcon);
         ImageView imageViewDateIcon = findViewById(R.id.imageViewDateIcon);
         ImageView imageViewTimeIcon = findViewById(R.id.imageViewTimeIcon);
-
 
         imageViewLocationIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +79,6 @@ public class EventCreationActivity extends AppCompatActivity {
                 showTimePicker();
             }
         });
-
 
         // Set click listener for Create Event button
         buttonCreateEvent.setOnClickListener(new View.OnClickListener() {
@@ -114,23 +122,72 @@ public class EventCreationActivity extends AppCompatActivity {
                 updateTime(hourOfDay, minute);
             }
         };
+
+        // Set a listener to handle the selected category
+        spinnerEventCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Category selectedCategory = categoryList.get(position);
+                selectedCategoryId = selectedCategory.getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedCategoryId = -1; // Reset the selected category ID
+            }
+        });
+
+        // Initialize the database helper and load categories
+        databaseHelper = new DatabaseHelper(this);
+        loadCategories();
+
+        // Get the category ID passed from the CategoryActivity
+        int categoryId = getIntent().getIntExtra("categoryId", -1);
+
+        // Select the category in the spinner based on the category ID
+        if (categoryId != -1) {
+            for (int i = 0; i < categoryList.size(); i++) {
+                if (categoryList.get(i).getId() == categoryId) {
+                    spinnerEventCategory.setSelection(i);
+                    break;
+                }
+            }
+        }
     }
 
     private boolean saveEventToDatabase(String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
+        // Insert event details into the events table
         ContentValues values = new ContentValues();
         values.put("event_name", eventName);
         values.put("event_location", eventLocation);
         values.put("event_date", eventDate);
         values.put("event_time", eventTime);
         values.put("event_budget", eventBudget);
+        long eventId = db.insert("events", null, values);
 
-        long result = db.insert("events", null, values);
-        db.close();
-
-        return result != -1;
+        // Insert the event-category mapping into the event_category table
+        if (eventId != -1) {
+            if (selectedCategoryId != -1) {
+                ContentValues mappingValues = new ContentValues();
+                mappingValues.put("event_id", eventId);
+                mappingValues.put("category_id", selectedCategoryId);
+                long mappingResult = db.insert("event_category", null, mappingValues);
+                if (mappingResult == -1) {
+                    // Failed to insert event-category mapping, delete the event from the events table
+                    db.delete("events", "id=?", new String[]{String.valueOf(eventId)});
+                    db.close();
+                    return false;
+                }
+            }
+            db.close();
+            return true;
+        } else {
+            db.close();
+            return false;
+        }
     }
 
     private void showDatePicker() {
@@ -160,5 +217,13 @@ public class EventCreationActivity extends AppCompatActivity {
     private void updateTime(int hourOfDay, int minute) {
         String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
         textViewEventTime.setText(selectedTime);
+    }
+
+    private void loadCategories() {
+        categoryList = databaseHelper.getAllCategories();
+        categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, categoryList);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        spinnerEventCategory.setAdapter(categoryAdapter);
     }
 }
