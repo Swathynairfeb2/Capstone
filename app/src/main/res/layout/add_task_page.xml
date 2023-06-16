@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purpleb">
-
     <EditText
         android:id="@+id/taskNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:fontFamily="@font/alegreya_italic"
+    android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:hint="Enter task name"
         android:padding="16dp" />
 
@@ -17,21 +18,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/taskNameEditText"
-        android:layout_marginTop="16dp"
+        android:fontFamily="@font/alegreya_italic"
+    android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:text="Add Task"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_green_dark" />
+        android:text="Add Task"
+        android:backgroundTint="@color/peachbutton"/>
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/addTaskButton"
-        android:layout_marginTop="16dp"
+        android:fontFamily="@font/alegreya_italic"
+    android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
         android:text="Cancel"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_dark" />
+        android:backgroundTint="@color/peachbutton"/>
 
 </RelativeLayout>

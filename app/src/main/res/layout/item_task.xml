@@ -9,13 +9,15 @@
     <CheckBox
         android:id="@+id/taskCheckBox"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/peachbutton">
+    </CheckBox>
     <TextView
         android:id="@+id/taskName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:fontFamily="@font/alegreya_italic"
+    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>
