@@ -1,3 +1,114 @@
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:background="@color/purpleb"-->
+<!--    android:orientation="vertical">-->
+
+<!--    &lt;!&ndash; First Row &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        &lt;!&ndash; First Event &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/eventLinearLayout1"-->
+<!--            android:layout_width="170dp"-->
+<!--            android:layout_height="185dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/group_1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="8dp">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="vertical"-->
+<!--                android:gravity="bottom|center_horizontal"> &lt;!&ndash; Set gravity to bottom and center_horizontal &ndash;&gt;-->
+
+
+<!--                <TextView-->
+<!--                    android:id="@+id/eventNameTextView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Event Name 1"-->
+<!--                    android:gravity="bottom|center_horizontal"-->
+<!--                    android:fontFamily="@font/alegreya_italic"-->
+<!--                    android:textColor="@android:color/white"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/eventDateTextView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="bottom|center_horizontal"-->
+<!--                    android:text="Event Date 1"-->
+<!--                    android:fontFamily="@font/alegreya_italic"-->
+<!--                    android:textColor="@android:color/white"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                &lt;!&ndash; Add any additional event details here &ndash;&gt;-->
+
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Space after the first event row &ndash;&gt;-->
+<!--        <Space-->
+<!--            android:layout_width="5dp"-->
+<!--            android:layout_height="wrap_content" />-->
+
+<!--        &lt;!&ndash; Second Event &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/eventLinearLayout2"-->
+<!--            android:layout_width="170dp"-->
+<!--            android:layout_height="185dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/group_2"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="8dp">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="vertical"-->
+<!--                android:gravity="bottom|center_horizontal"> &lt;!&ndash; Set gravity to bottom and center_horizontal &ndash;&gt;-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/eventNameTextView2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Event Name 2"-->
+<!--                    android:fontFamily="@font/alegreya_italic"-->
+<!--                    android:textColor="@android:color/white"-->
+<!--                    android:gravity="bottom|center_horizontal"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/eventDateTextView2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Event Date 2"-->
+<!--                    android:fontFamily="@font/alegreya_italic"-->
+<!--                    android:textColor="@android:color/white"-->
+<!--                    android:gravity="bottom|center_horizontal"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                &lt;!&ndash; Add any additional event details here &ndash;&gt;-->
+
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Second Row &ndash;&gt;-->
+<!--    &lt;!&ndash; Repeat the same layout for the second row &ndash;&gt;-->
+
+<!--</LinearLayout>-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -26,8 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:gravity="bottom|center_horizontal"> <!-- Set gravity to bottom and center_horizontal -->
-
+                android:gravity="bottom|center_horizontal">
 
                 <TextView
                     android:id="@+id/eventNameTextView"
@@ -50,7 +160,15 @@
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
 
-                <!-- Add any additional event details here -->
+                <!-- Countdown Timer -->
+                <TextView
+                    android:id="@+id/countdownTextView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom|center_horizontal"
+                    android:text="Countdown: 00:00:00"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -75,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:gravity="bottom|center_horizontal"> <!-- Set gravity to bottom and center_horizontal -->
+                android:gravity="bottom|center_horizontal">
 
                 <TextView
                     android:id="@+id/eventNameTextView2"
@@ -98,7 +216,15 @@
                     android:gravity="bottom|center_horizontal"
                     android:textSize="14sp" />
 
-                <!-- Add any additional event details here -->
+                <!-- Countdown Timer -->
+                <TextView
+                    android:id="@+id/countdownTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom|center_horizontal"
+                    android:text="Countdown: 00:00:00"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

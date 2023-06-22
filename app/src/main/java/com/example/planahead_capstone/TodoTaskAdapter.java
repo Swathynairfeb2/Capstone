@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -42,7 +43,8 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
                 task.setCompleted(checkBox.isChecked());
             }
         });
-        Button deleteButton = view.findViewById(R.id.deleteButton);
+       //Button deleteButton = view.findViewById(R.id.deleteButton);
+        ImageView deleteButton=view.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
