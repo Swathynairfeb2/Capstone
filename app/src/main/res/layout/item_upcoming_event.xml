@@ -39,6 +39,7 @@
         android:textColor="@color/white"
         android:padding="8dp" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/upcomingEventsRecyclerView"
         android:layout_width="match_parent"

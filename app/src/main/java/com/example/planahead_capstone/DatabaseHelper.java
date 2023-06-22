@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,7 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categoryList;
     }
 
-    public void mapEventToCategory(long eventId, int categoryId) {
+    public void mapEventToCategory(int eventId, int categoryId) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -181,6 +182,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Add other necessary methods for user and event operations
+public EventDetails getEventById(String eventId) {
+    SQLiteDatabase db = getReadableDatabase();
+
+    Cursor cursor = db.query(TABLE_EVENTS, null, COLUMN_EVENT_ID + " = ?",
+            new String[]{eventId}, null, null, null);
+
+    EventDetails event = null;
+
+    if (cursor != null && cursor.moveToFirst()) {
+        int columnIndexEventName = cursor.getColumnIndex(COLUMN_EVENT_NAME);
+        int columnIndexEventLocation = cursor.getColumnIndex(COLUMN_EVENT_LOCATION);
+        int columnIndexEventDate = cursor.getColumnIndex(COLUMN_EVENT_DATE);
+        int columnIndexEventTime = cursor.getColumnIndex(COLUMN_EVENT_TIME);
+        int columnIndexEventBudget = cursor.getColumnIndex(COLUMN_EVENT_BUDGET);
+
+        String eventName = cursor.getString(columnIndexEventName);
+        String eventLocation = cursor.getString(columnIndexEventLocation);
+        String eventDate = cursor.getString(columnIndexEventDate);
+        String eventTime = cursor.getString(columnIndexEventTime);
+        String eventBudget = cursor.getString(columnIndexEventBudget);
+
+        event = new EventDetails(eventId, eventName, eventLocation, eventDate, eventTime, eventBudget);
+    }
+
+    if (cursor != null) {
+        cursor.close();
+    }
+    db.close();
+
+    return event;
+}
 
 }
+
+    // Add other necessary methods for user and event operations
+
+

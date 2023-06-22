@@ -1,5 +1,4 @@
 package com.example.planahead_capstone;
-
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,31 +28,44 @@ public class MyUpcomingEventsAdapter extends RecyclerView.Adapter<MyUpcomingEven
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        UpcomingEvent upcomingEvent = upcomingEventList.get(position * 2);
+        int eventIndex1 = position * 2;
+        int eventIndex2 = position * 2 + 1;
 
-        // Bind data to the first event views
-        holder.eventNameTextView1.setText(upcomingEvent.getEventName());
-        holder.eventDateTextView1.setText(upcomingEvent.getEventDate());
+        UpcomingEvent upcomingEvent1 = upcomingEventList.get(eventIndex1);
+        holder.eventLinearLayout1.setVisibility(View.VISIBLE);
+        holder.eventNameTextView1.setText(upcomingEvent1.getEventName());
+        holder.eventDateTextView1.setText(upcomingEvent1.getEventDate());
 
-        // Check if there is a second event
-        if (position * 2 + 1 < upcomingEventList.size()) {
-            UpcomingEvent secondUpcomingEvent = upcomingEventList.get(position * 2 + 1);
-
-            // Bind data to the second event views
-            holder.eventNameTextView2.setText(secondUpcomingEvent.getEventName());
-            holder.eventDateTextView2.setText(secondUpcomingEvent.getEventDate());
-
-            // Show the second event views
+        if (eventIndex2 < upcomingEventList.size()) {
+            final UpcomingEvent upcomingEvent2 = upcomingEventList.get(eventIndex2);
             holder.eventLinearLayout2.setVisibility(View.VISIBLE);
+            holder.eventNameTextView2.setText(upcomingEvent2.getEventName());
+            holder.eventDateTextView2.setText(upcomingEvent2.getEventDate());
+
+            holder.eventLinearLayout2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), EventDetailPage.class);
+                    intent.putExtra("event", upcomingEvent2);
+                    v.getContext().startActivity(intent);
+                }
+            });
         } else {
-            // Hide the second event views if there is no second event
             holder.eventLinearLayout2.setVisibility(View.GONE);
         }
+
+        holder.eventLinearLayout1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), EventDetailPage.class);
+                intent.putExtra("event", upcomingEvent1);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        // Divide the number of events by 2 to get the number of rows
         return (int) Math.ceil(upcomingEventList.size() / 2.0);
     }
 
@@ -85,16 +97,11 @@ public class MyUpcomingEventsAdapter extends RecyclerView.Adapter<MyUpcomingEven
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                // Get the clicked event
-                UpcomingEvent clickedEvent = upcomingEventList.get(position * 2);
+                int eventIndex = position * 2;
+                UpcomingEvent clickedEvent = upcomingEventList.get(eventIndex);
 
-                // Start the EventDetailPage activity here, passing the event details
                 Intent intent = new Intent(v.getContext(), EventDetailPage.class);
-                intent.putExtra("eventName", clickedEvent.getEventName());
-                intent.putExtra("eventDate", clickedEvent.getEventDate());
-                // Add any additional event details to the intent
-                // ...
-
+                intent.putExtra("event", clickedEvent);
                 v.getContext().startActivity(intent);
             }
         }

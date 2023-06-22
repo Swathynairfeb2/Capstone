@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:orientation="vertical"-->
-<!--    android:padding="20dp"-->
-<!--    android:background="@color/purpleb"-->
-<!--    tools:context=".EventDetailPage">-->
-<!--    <ImageView-->
-<!--        android:id="@+id/addCategoryImageView"-->
-<!--        android:layout_width="48dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:src="@drawable/icon_plus"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_alignParentEnd="true" />-->
-
-<!--</LinearLayout>-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,7 +8,17 @@
     android:padding="20dp"
     android:background="@color/purpleb"
     tools:context=".EventDetailPage">
-
+    <TextView
+        android:id="@+id/EventDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Event Details"
+        android:fontFamily="@font/alegreya_italic"
+        android:background="@color/purpleb"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:padding="8dp" />
     <!-- ImageView 1 -->
     <ImageView
         android:id="@+id/budgetImageView"
@@ -47,6 +38,64 @@
         android:layout_alignTop="@id/budgetImageView"
         android:layout_marginRight="16dp" />
 
+    <!-- Event Name -->
+    <TextView
+        android:id="@+id/eventNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/alegreya_italic"
+        android:text="Event Name"
+        android:layout_below="@id/budgetImageView" />
 
+    <!-- Event Location -->
+    <TextView
+        android:id="@+id/eventLocationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_below="@id/eventNameTextView"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/alegreya_italic"
+        android:text="Location" />
 
-  </RelativeLayout>
+    <!-- Event Date -->
+    <TextView
+        android:id="@+id/eventDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_below="@id/eventLocationTextView"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/alegreya_italic"
+        android:text="Date" />
+
+    <!-- Event Time -->
+    <TextView
+        android:id="@+id/eventTimeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_below="@id/eventDateTextView"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/alegreya_italic"
+        android:text="Time" />
+
+    <!-- Event Budget -->
+    <TextView
+        android:id="@+id/eventBudgetTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_below="@id/eventTimeTextView"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/alegreya_italic"
+        android:text="Budget" />
+
+</RelativeLayout>

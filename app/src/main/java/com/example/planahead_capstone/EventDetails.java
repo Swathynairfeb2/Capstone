@@ -1,15 +1,15 @@
 package com.example.planahead_capstone;
 
 public class EventDetails {
-    private int eventId;
+    private String eventId;
     private String eventName;
     private String eventLocation;
     private String eventDate;
     private String eventTime;
     private String eventBudget;
 
-    public EventDetails(int eventId, String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
-        this.eventId = eventId;
+    public EventDetails(String eventId,String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
+        this.eventId=eventId;
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
@@ -17,7 +17,7 @@ public class EventDetails {
         this.eventBudget = eventBudget;
     }
 
-    public int getEventId() {
+    public String getEventId() {
         return eventId;
     }
 
@@ -41,4 +41,3 @@ public class EventDetails {
         return eventBudget;
     }
 }
-

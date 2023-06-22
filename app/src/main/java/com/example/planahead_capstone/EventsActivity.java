@@ -21,8 +21,12 @@ public class EventsActivity extends AppCompatActivity {
     private List<UpcomingEvent> upcomingEvents;
 
     // Add the missing constant values
+    private static final String COLUMN_EVENT_ID = "id";
     private static final String COLUMN_EVENT_NAME = "event_name";
     private static final String COLUMN_EVENT_DATE = "event_date";
+    private static final String COLUMN_EVENT_LOCATION = "event_location";
+    private static final String COLUMN_EVENT_TIME = "event_time";
+    private static final String COLUMN_EVENT_BUDGET = "event_budget";
     private static final String TABLE_EVENTS = "events";
 
     @Override
@@ -46,7 +50,11 @@ public class EventsActivity extends AppCompatActivity {
 
         // Define the columns to retrieve from the events table
         String[] projection = {
+                COLUMN_EVENT_ID,
                 COLUMN_EVENT_NAME,
+                COLUMN_EVENT_TIME,
+                COLUMN_EVENT_LOCATION,
+                COLUMN_EVENT_BUDGET,
                 COLUMN_EVENT_DATE
         };
 
@@ -63,9 +71,13 @@ public class EventsActivity extends AppCompatActivity {
 
         // Iterate over the cursor and create UpcomingEvent objects
         while (cursor.moveToNext()) {
+            String eventId=cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_ID));
             String eventName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_NAME));
             String eventDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_DATE));
-            UpcomingEvent event = new UpcomingEvent(eventName, eventDate, R.drawable.group_1);
+            String eventLocation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_LOCATION));
+            String eventTime = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_TIME));
+            String eventBudget = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_BUDGET));
+            UpcomingEvent event = new UpcomingEvent(eventId,eventName, eventDate,eventTime,eventLocation,eventBudget, R.drawable.group_1);
             // Create an UpcomingEvent object with only name and date
 
             upcomingEvents.add(event);
