@@ -1,5 +1,6 @@
 
 package com.example.planahead_capstone;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class EventDetailPage extends AppCompatActivity {
 
     private ImageView addTaskImage;
+    private ImageView budgetImage;
     private TextView invitationTextView;
+
     private TextView eventNameTextView;
     private TextView eventLocationTextView;
     private TextView eventDateTextView;
@@ -26,11 +29,13 @@ public class EventDetailPage extends AppCompatActivity {
         setContentView(R.layout.activity_eventdetailpage);
 
         addTaskImage = findViewById(R.id.toDoImageView);
+        budgetImage = findViewById(R.id.budgetImageView);
         eventNameTextView = findViewById(R.id.eventNameTextView);
         eventLocationTextView = findViewById(R.id.eventLocationTextView);
         eventDateTextView = findViewById(R.id.eventDateTextView);
         eventTimeTextView = findViewById(R.id.eventTimeTextView);
         eventBudgetTextView = findViewById(R.id.eventBudgetTextView);
+
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -40,6 +45,13 @@ public class EventDetailPage extends AppCompatActivity {
                 openTodoListPage();
             }
         });
+        budgetImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddBudgetPage();
+            }
+        });
+
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -47,9 +59,11 @@ public class EventDetailPage extends AppCompatActivity {
             if (event != null) {
                 updateEventDetails(event);
             }
-        }
-    }
 
+        }
+
+
+    }
     private void updateEventDetails(UpcomingEvent event) {
         if (event != null) {
             String eventName = event.getEventName();
@@ -66,8 +80,16 @@ public class EventDetailPage extends AppCompatActivity {
         }
     }
 
+
+
+
     private void openTodoListPage() {
         Intent intent = new Intent(this, TodoListActivity.class);
         startActivity(intent);
     }
+    private void openAddBudgetPage() {
+        Intent intent = new Intent(this, BudgetListActivity.class);
+        startActivity(intent);
+    }
+
 }
