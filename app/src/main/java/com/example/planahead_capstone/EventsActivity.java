@@ -23,8 +23,8 @@ public class EventsActivity extends AppCompatActivity {
     // Add the missing constant values
     private static final String COLUMN_EVENT_ID = "id";
     private static final String COLUMN_EVENT_NAME = "event_name";
-    private static final String COLUMN_EVENT_DATE = "event_date";
     private static final String COLUMN_EVENT_LOCATION = "event_location";
+    private static final String COLUMN_EVENT_DATE = "event_date";
     private static final String COLUMN_EVENT_TIME = "event_time";
     private static final String COLUMN_EVENT_BUDGET = "event_budget";
     private static final String TABLE_EVENTS = "events";
@@ -52,10 +52,11 @@ public class EventsActivity extends AppCompatActivity {
         String[] projection = {
                 COLUMN_EVENT_ID,
                 COLUMN_EVENT_NAME,
-                COLUMN_EVENT_TIME,
                 COLUMN_EVENT_LOCATION,
-                COLUMN_EVENT_BUDGET,
-                COLUMN_EVENT_DATE
+                COLUMN_EVENT_DATE,
+                COLUMN_EVENT_TIME,
+                COLUMN_EVENT_BUDGET
+
         };
 
         // Query the events table
@@ -73,11 +74,11 @@ public class EventsActivity extends AppCompatActivity {
         while (cursor.moveToNext()) {
             String eventId=cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_ID));
             String eventName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_NAME));
-            String eventDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_DATE));
             String eventLocation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_LOCATION));
+            String eventDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_DATE));
             String eventTime = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_TIME));
             String eventBudget = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EVENT_BUDGET));
-            UpcomingEvent event = new UpcomingEvent(eventId,eventName, eventDate,eventTime,eventLocation,eventBudget, R.drawable.group_1);
+            UpcomingEvent event = new UpcomingEvent(eventId,eventName,eventLocation, eventDate,eventTime,eventBudget, R.drawable.group_1);
             // Create an UpcomingEvent object with only name and date
 
             upcomingEvents.add(event);
@@ -97,6 +98,10 @@ public class EventsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -130,3 +135,4 @@ public class EventsActivity extends AppCompatActivity {
                 }
             };
 }
+

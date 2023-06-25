@@ -1,9 +1,18 @@
 
 package com.example.planahead_capstone;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +43,14 @@ public class EventDetailPage extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
+        ImageView eventOptionImage = findViewById(R.id.eventoption);
+        eventOptionImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupWindow(v);
+            }
+        });
+
         addTaskImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +63,7 @@ public class EventDetailPage extends AppCompatActivity {
             UpcomingEvent event = intent.getParcelableExtra("event");
             if (event != null) {
                 updateEventDetails(event);
+                eventId = event.getEventId();
             }
         }
     }
@@ -64,6 +82,78 @@ public class EventDetailPage extends AppCompatActivity {
             eventTimeTextView.setText(eventTime);
             eventBudgetTextView.setText(eventBudget);
         }
+    }
+
+    private void showPopupWindow(View anchorView) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_menu_layout, null);
+
+        // Set up the PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setElevation(10);
+
+        // Set up click listeners for popup window items
+        TextView option1TextView = popupView.findViewById(R.id.editOptionTextView);
+        TextView option2TextView = popupView.findViewById(R.id.deleteOptionTextView);
+
+        option1TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditEventPage();
+                popupWindow.dismiss();
+            }
+        });
+
+        option2TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteEvent();
+                popupWindow.dismiss();
+            }
+        });
+
+        // Calculate the x and y coordinates for the PopupWindow
+        int[] location = new int[2];
+        anchorView.getLocationOnScreen(location);
+        int anchorViewX = location[0];
+        int anchorViewY = location[1];
+
+        // Adjust the x and y coordinates to position the PopupWindow near the clicked image
+        int offsetX = anchorView.getWidth() / 2;
+        int offsetY = anchorView.getHeight() / 2;
+        int popupX = anchorViewX - offsetX;
+        int popupY = anchorViewY - offsetY;
+
+        // Show the PopupWindow
+        popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, popupX, popupY);
+    }
+
+    private void openEditEventPage() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            UpcomingEvent event = intent.getParcelableExtra("event");
+            if (event != null) {
+                Intent editIntent = new Intent(this, EditEventActivity.class);
+                editIntent.putExtra("event", event);
+                startActivity(editIntent);
+            }
+        }
+    }
+
+    private void deleteEvent() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Event");
+        builder.setMessage("Are you sure you want to delete this event?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                databaseHelper.deleteEvent(eventId);
+                finish(); // Finish the activity after deleting the event
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
     private void openTodoListPage() {

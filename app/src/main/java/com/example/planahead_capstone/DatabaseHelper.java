@@ -1,4 +1,5 @@
 package com.example.planahead_capstone;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -182,40 +183,70 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-public EventDetails getEventById(String eventId) {
-    SQLiteDatabase db = getReadableDatabase();
+    public EventDetails getEventById(String eventId) {
+        SQLiteDatabase db = getReadableDatabase();
 
-    Cursor cursor = db.query(TABLE_EVENTS, null, COLUMN_EVENT_ID + " = ?",
-            new String[]{eventId}, null, null, null);
+        Cursor cursor = db.query(TABLE_EVENTS, null, COLUMN_EVENT_ID + " = ?",
+                new String[]{eventId}, null, null, null);
 
-    EventDetails event = null;
+        EventDetails event = null;
 
-    if (cursor != null && cursor.moveToFirst()) {
-        int columnIndexEventName = cursor.getColumnIndex(COLUMN_EVENT_NAME);
-        int columnIndexEventLocation = cursor.getColumnIndex(COLUMN_EVENT_LOCATION);
-        int columnIndexEventDate = cursor.getColumnIndex(COLUMN_EVENT_DATE);
-        int columnIndexEventTime = cursor.getColumnIndex(COLUMN_EVENT_TIME);
-        int columnIndexEventBudget = cursor.getColumnIndex(COLUMN_EVENT_BUDGET);
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndexEventName = cursor.getColumnIndex(COLUMN_EVENT_NAME);
+            int columnIndexEventLocation = cursor.getColumnIndex(COLUMN_EVENT_LOCATION);
+            int columnIndexEventDate = cursor.getColumnIndex(COLUMN_EVENT_DATE);
+            int columnIndexEventTime = cursor.getColumnIndex(COLUMN_EVENT_TIME);
+            int columnIndexEventBudget = cursor.getColumnIndex(COLUMN_EVENT_BUDGET);
 
-        String eventName = cursor.getString(columnIndexEventName);
-        String eventLocation = cursor.getString(columnIndexEventLocation);
-        String eventDate = cursor.getString(columnIndexEventDate);
-        String eventTime = cursor.getString(columnIndexEventTime);
-        String eventBudget = cursor.getString(columnIndexEventBudget);
+            String eventName = cursor.getString(columnIndexEventName);
+            String eventLocation = cursor.getString(columnIndexEventLocation);
+            String eventDate = cursor.getString(columnIndexEventDate);
+            String eventTime = cursor.getString(columnIndexEventTime);
+            String eventBudget = cursor.getString(columnIndexEventBudget);
 
-        event = new EventDetails(eventId, eventName, eventLocation, eventDate, eventTime, eventBudget);
+            event = new EventDetails(eventId, eventName, eventLocation, eventDate, eventTime, eventBudget);
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return event;
+    }
+    public void updateEvent(int eventId, String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT_NAME, eventName);
+        values.put(COLUMN_EVENT_LOCATION, eventLocation);
+        values.put(COLUMN_EVENT_DATE, eventDate);
+        values.put(COLUMN_EVENT_TIME, eventTime);
+        values.put(COLUMN_EVENT_BUDGET, eventBudget);
+
+        db.update(TABLE_EVENTS, values, COLUMN_EVENT_ID + "= ?", new String[]{String.valueOf(eventId)});
+
+        db.close();
+    }
+    public void deleteEvent(String eventId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_EVENTS, COLUMN_EVENT_ID + " = ?", new String[]{eventId});
+        db.close();
     }
 
-    if (cursor != null) {
-        cursor.close();
+    public void updateCategory(int categoryId, String categoryName) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CATEGORY_NAME, categoryName);
+
+        db.update(TABLE_CATEGORY, values, COLUMN_CATEGORY_ID + " = ?", new String[]{String.valueOf(categoryId)});
+        db.close();
     }
-    db.close();
-
-    return event;
+    // Method to delete a category from the database
+    public void deleteCategory(int categoryId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CATEGORY, COLUMN_CATEGORY_ID + " = ?", new String[]{String.valueOf(categoryId)});
+        db.close();
+    }
 }
-
-}
-
-    // Add other necessary methods for user and event operations
-
-

@@ -43,7 +43,7 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
                 task.setCompleted(checkBox.isChecked());
             }
         });
-       //Button deleteButton = view.findViewById(R.id.deleteButton);
+
         ImageView deleteButton=view.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
