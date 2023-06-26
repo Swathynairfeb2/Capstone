@@ -1,4 +1,5 @@
 package com.example.planahead_capstone;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -38,6 +39,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_EVENT_CATEGORY_EVENT_ID = "event_id";
     private static final String COLUMN_EVENT_CATEGORY_CATEGORY_ID = "category_id";
 
+    //todo table
+    private static final String TABLE_TODO = "todo";
+    private static final String COLUMN_TODO_ID = "id";
+    private static final String COLUMN_TODO_NAME = "task_name";
+    private static final String COLUMN_TODO_COMPLETED = "completed";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -71,6 +78,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(" + COLUMN_EVENT_CATEGORY_EVENT_ID + ") REFERENCES " + TABLE_EVENTS + "(" + COLUMN_EVENT_ID + "), " +
                 "FOREIGN KEY(" + COLUMN_EVENT_CATEGORY_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORY + "(" + COLUMN_CATEGORY_ID + "))";
         db.execSQL(createEventCategoryTableQuery);
+
+        String createTodoTableQuery = "CREATE TABLE " + TABLE_TODO +
+                "(" + COLUMN_TODO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TODO_NAME + " TEXT, " +
+                COLUMN_TODO_COMPLETED + " INTEGER)";
+        db.execSQL(createTodoTableQuery);
     }
 
     @Override
@@ -79,71 +92,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENT_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO);
         onCreate(db);
     }
 
-    public String getColumnNameEventName() {
-        return COLUMN_EVENT_NAME;
-    }
-
-    public String getColumnNameEventLocation() {
-        return COLUMN_EVENT_LOCATION;
-    }
-
-    public String getColumnNameEventDate() {
-        return COLUMN_EVENT_DATE;
-    }
-
-    public String getColumnNameEventTime() {
-        return COLUMN_EVENT_TIME;
-    }
-
-    public String getColumnNameEventBudget() {
-        return COLUMN_EVENT_BUDGET;
-    }
-
-    public String getTableNameEvents() {
-        return TABLE_EVENTS;
-    }
-
-    public String getColumnNameEventCategoryEventId() {
-        return COLUMN_EVENT_CATEGORY_EVENT_ID;
-    }
-
-    public String getColumnNameEventCategoryCategoryId() {
-        return COLUMN_EVENT_CATEGORY_CATEGORY_ID;
-    }
-
-    public String getTableNameEventCategory() {
-        return TABLE_EVENT_CATEGORY;
-    }
-
-    public long insertEvent(String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
+    public long insertTask(String taskName, boolean completed) {
         SQLiteDatabase db = getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENT_NAME, eventName);
-        values.put(COLUMN_EVENT_LOCATION, eventLocation);
-        values.put(COLUMN_EVENT_DATE, eventDate);
-        values.put(COLUMN_EVENT_TIME, eventTime);
-        values.put(COLUMN_EVENT_BUDGET, eventBudget);
-
-        long eventId = db.insert(TABLE_EVENTS, null, values);
+        values.put(COLUMN_TODO_NAME, taskName);
+        values.put(COLUMN_TODO_COMPLETED, completed ? 1 : 0);
+        long taskId = db.insert(TABLE_TODO, null, values);
         db.close();
-
-        return eventId;
+        return taskId;
     }
 
-    public void addCategory(String categoryName) {
+    public List<TodoTask> getAllTasks() {
+        List<TodoTask> tasks = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String[] columns = {COLUMN_TODO_ID, COLUMN_TODO_NAME, COLUMN_TODO_COMPLETED};
+        Cursor cursor = db.query(TABLE_TODO, columns, null, null, null, null, null);
+        if (cursor != null) {
+            int columnIndexId = cursor.getColumnIndex(COLUMN_TODO_ID);
+            int columnIndexName = cursor.getColumnIndex(COLUMN_TODO_NAME);
+            int columnIndexCompleted = cursor.getColumnIndex(COLUMN_TODO_COMPLETED);
+            while (cursor.moveToNext()) {
+                long taskId = cursor.getLong(columnIndexId);
+                String taskName = cursor.getString(columnIndexName);
+                int completedInt = cursor.getInt(columnIndexCompleted);
+                boolean completed = (completedInt == 1);
+                TodoTask task = new TodoTask(taskId, taskName, completed);
+                tasks.add(task);
+            }
+            cursor.close();
+        }
+        db.close();
+        return tasks;
+    }
+
+
+
+
+    public void updateTask(long taskId, boolean completed) {
         SQLiteDatabase db = getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CATEGORY_NAME, categoryName);
-
-        db.insert(TABLE_CATEGORY, null, values);
+        values.put(COLUMN_TODO_COMPLETED, completed ? 1 : 0);
+        db.update(TABLE_TODO, values, COLUMN_TODO_ID + " = ?", new String[]{String.valueOf(taskId)});
         db.close();
     }
 
+    public void deleteTask(long taskId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_TODO, COLUMN_TODO_ID + " = ?", new String[]{String.valueOf(taskId)});
+        db.close();
+    }
     public List<Category> getAllCategories() {
         List<Category> categoryList = new ArrayList<>();
 
@@ -170,52 +171,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return categoryList;
     }
-
-    public void mapEventToCategory(int eventId, int categoryId) {
+    public void addCategory(String categoryName) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENT_CATEGORY_EVENT_ID, eventId);
-        values.put(COLUMN_EVENT_CATEGORY_CATEGORY_ID, categoryId);
+        values.put(COLUMN_CATEGORY_NAME, categoryName);
 
-        db.insert(TABLE_EVENT_CATEGORY, null, values);
+        db.insert(TABLE_CATEGORY, null, values);
         db.close();
     }
 
-public EventDetails getEventById(String eventId) {
-    SQLiteDatabase db = getReadableDatabase();
-
-    Cursor cursor = db.query(TABLE_EVENTS, null, COLUMN_EVENT_ID + " = ?",
-            new String[]{eventId}, null, null, null);
-
-    EventDetails event = null;
-
-    if (cursor != null && cursor.moveToFirst()) {
-        int columnIndexEventName = cursor.getColumnIndex(COLUMN_EVENT_NAME);
-        int columnIndexEventLocation = cursor.getColumnIndex(COLUMN_EVENT_LOCATION);
-        int columnIndexEventDate = cursor.getColumnIndex(COLUMN_EVENT_DATE);
-        int columnIndexEventTime = cursor.getColumnIndex(COLUMN_EVENT_TIME);
-        int columnIndexEventBudget = cursor.getColumnIndex(COLUMN_EVENT_BUDGET);
-
-        String eventName = cursor.getString(columnIndexEventName);
-        String eventLocation = cursor.getString(columnIndexEventLocation);
-        String eventDate = cursor.getString(columnIndexEventDate);
-        String eventTime = cursor.getString(columnIndexEventTime);
-        String eventBudget = cursor.getString(columnIndexEventBudget);
-
-        event = new EventDetails(eventId, eventName, eventLocation, eventDate, eventTime, eventBudget);
-    }
-
-    if (cursor != null) {
-        cursor.close();
-    }
-    db.close();
-
-    return event;
 }
-
-}
-
-    // Add other necessary methods for user and event operations
-
-

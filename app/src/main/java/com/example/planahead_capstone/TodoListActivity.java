@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,11 +19,14 @@ public class TodoListActivity extends Activity {
 
     private List<TodoTask> tasks;
     private TodoTaskAdapter adapter;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_list_page);
+
+        databaseHelper = new DatabaseHelper(this);
 
         todoListView = findViewById(R.id.todoListView);
         addTaskButton = findViewById(R.id.addTaskButton);
@@ -71,7 +71,8 @@ public class TodoListActivity extends Activity {
             String taskName = data.getStringExtra("taskName");
 
             if (taskName != null && !taskName.isEmpty()) {
-                TodoTask todoTask = new TodoTask(taskName, false);
+                long taskId = databaseHelper.insertTask(taskName, false);
+                TodoTask todoTask = new TodoTask(taskId, taskName, false);
                 tasks.add(todoTask);
                 adapter.notifyDataSetChanged();
             }

@@ -3,6 +3,7 @@ package com.example.planahead_capstone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class EventDetailPage extends AppCompatActivity {
 
     private ImageView addTaskImage;
+    private ImageView invitationImage;
     private TextView invitationTextView;
     private TextView eventNameTextView;
     private TextView eventLocationTextView;
@@ -19,6 +21,7 @@ public class EventDetailPage extends AppCompatActivity {
     private TextView eventBudgetTextView;
     private DatabaseHelper databaseHelper;
     private String eventId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class EventDetailPage extends AppCompatActivity {
         eventDateTextView = findViewById(R.id.eventDateTextView);
         eventTimeTextView = findViewById(R.id.eventTimeTextView);
         eventBudgetTextView = findViewById(R.id.eventBudgetTextView);
+        invitationImage = findViewById(R.id.invitationImageView);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -39,6 +43,10 @@ public class EventDetailPage extends AppCompatActivity {
             public void onClick(View v) {
                 openTodoListPage();
             }
+        });
+        invitationImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { openInvitationPage();}
         });
 
         Intent intent = getIntent();
@@ -68,6 +76,10 @@ public class EventDetailPage extends AppCompatActivity {
 
     private void openTodoListPage() {
         Intent intent = new Intent(this, TodoListActivity.class);
+        startActivity(intent);
+    }
+    private void openInvitationPage(){
+        Intent intent = new Intent(this,InvitationActivity.class);
         startActivity(intent);
     }
 }

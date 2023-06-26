@@ -5,9 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,11 +15,13 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
 
     private Context context;
     private List<TodoTask> tasks;
+    private DatabaseHelper databaseHelper;
 
     public TodoTaskAdapter(Context context, List<TodoTask> tasks) {
         super(context, 0, tasks);
         this.context = context;
         this.tasks = tasks;
+        this.databaseHelper = new DatabaseHelper(context);
     }
 
     @Override
@@ -41,17 +41,10 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
             @Override
             public void onClick(View v) {
                 task.setCompleted(checkBox.isChecked());
+                databaseHelper.updateTask(task.getId(), task.isCompleted());
             }
         });
-       //Button deleteButton = view.findViewById(R.id.deleteButton);
-        ImageView deleteButton=view.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tasks.remove(position);
-                notifyDataSetChanged();
-            }
-        });
+
         TextView taskNameTextView = view.findViewById(R.id.taskNameTextView);
         taskNameTextView.setText(task.getName());
 

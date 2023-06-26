@@ -56,6 +56,7 @@
    <activity android:name=".EventDetailPage"></activity>
         <activity android:name=".TodoListActivity"></activity>
         <activity android:name=".AddTaskActivity"></activity>
+        <activity android:name=".InvitationActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
