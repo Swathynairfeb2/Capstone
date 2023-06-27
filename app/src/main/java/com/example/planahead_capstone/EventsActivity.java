@@ -19,6 +19,7 @@ import java.util.List;
 
 public class EventsActivity extends AppCompatActivity {
     private List<UpcomingEvent> upcomingEvents;
+    private MyUpcomingEventsAdapter adapter;
 
     // Add the missing constant values
     private static final String COLUMN_EVENT_ID = "id";
@@ -39,6 +40,12 @@ public class EventsActivity extends AppCompatActivity {
 
         // Display upcoming events
         displayUpcomingEvents();
+        // Initialize the adapter
+        adapter = new MyUpcomingEventsAdapter(upcomingEvents);
+        // Set the adapter and layout manager to the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.upcomingEventsRecyclerView);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private List<UpcomingEvent> getUpcomingEvents() {
@@ -99,7 +106,17 @@ public class EventsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startCountdownTimer();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopCountdownTimer();
+    }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =

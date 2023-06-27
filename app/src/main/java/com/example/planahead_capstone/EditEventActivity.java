@@ -1,11 +1,14 @@
 package com.example.planahead_capstone;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -132,7 +135,24 @@ public class EditEventActivity extends AppCompatActivity {
         // Update the event in the database
         databaseHelper.updateEvent(eventId, eventName, eventLocation, eventDate, eventTime, eventBudget);
 
-        Toast.makeText(EditEventActivity.this, "Event updated successfully", Toast.LENGTH_SHORT).show();
+        // Display the Toast
+        Toast toast = Toast.makeText(EditEventActivity.this, "Event updated successfully", Toast.LENGTH_SHORT);
+
+        // Apply the custom style
+        View toastView = toast.getView();
+        toastView.setBackgroundResource(R.drawable.custom_toast_background);
+        TextView toastText = toastView.findViewById(android.R.id.message);
+        toastText.setTextColor(getResources().getColor(R.color.white));
+
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
+
+
+        // Redirect to the UpcomingEventsActivity
+        Intent intent = new Intent(EditEventActivity.this, EventsActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 
 }

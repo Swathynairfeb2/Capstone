@@ -3,17 +3,14 @@ package com.example.planahead_capstone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EventDetailPage extends AppCompatActivity {
 
     private ImageView addTaskImage;
-    private ImageView invitationImage;
     private TextView invitationTextView;
     private TextView eventNameTextView;
     private TextView eventLocationTextView;
@@ -21,8 +18,7 @@ public class EventDetailPage extends AppCompatActivity {
     private TextView eventTimeTextView;
     private TextView eventBudgetTextView;
     private DatabaseHelper databaseHelper;
-    private Integer eventId;
-
+    private String eventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +31,6 @@ public class EventDetailPage extends AppCompatActivity {
         eventDateTextView = findViewById(R.id.eventDateTextView);
         eventTimeTextView = findViewById(R.id.eventTimeTextView);
         eventBudgetTextView = findViewById(R.id.eventBudgetTextView);
-        invitationImage = findViewById(R.id.invitationImageView);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -45,15 +40,10 @@ public class EventDetailPage extends AppCompatActivity {
                 openTodoListPage();
             }
         });
-        invitationImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { openInvitationPage();}
-        });
 
         Intent intent = getIntent();
         if (intent != null) {
             UpcomingEvent event = intent.getParcelableExtra("event");
-
             if (event != null) {
                 updateEventDetails(event);
             }
@@ -62,8 +52,6 @@ public class EventDetailPage extends AppCompatActivity {
 
     private void updateEventDetails(UpcomingEvent event) {
         if (event != null) {
-            eventId = Integer.valueOf(event.getEventId());
-
             String eventName = event.getEventName();
             String eventLocation = event.getEventLocation();
             String eventDate = event.getEventDate();
@@ -79,17 +67,7 @@ public class EventDetailPage extends AppCompatActivity {
     }
 
     private void openTodoListPage() {
-        if (eventId != null) {
-            Intent intent = new Intent(this, TodoListActivity.class);
-            intent.putExtra("eventId", eventId);
-            startActivity(intent);
-        } else {
-            Toast.makeText(getApplicationContext(), "eventId is null", Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void openInvitationPage(){
-        Intent intent = new Intent(this,InvitationActivity.class);
+        Intent intent = new Intent(this, TodoListActivity.class);
         startActivity(intent);
     }
-
 }

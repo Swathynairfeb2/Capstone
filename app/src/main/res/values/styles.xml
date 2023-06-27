@@ -11,4 +11,19 @@
         <item name="android:fontFamily">@font/alegreya_italic</item>
     </style>
 
+    <style name="AlertDialogCustomStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/peachbutton</item> <!-- Customize the button color -->
+        <item name="android:textColor">@color/white</item> <!-- Customize the button text color -->
+        <item name="android:background">@color/purpleb</item>
+        <item name="android:fontFamily">@font/alegreya_italic</item>
+        <!-- Add more customizations if needed -->
+    </style>
+    <style name="CustomToast">
+        <item name="android:background">@color/purple</item> <!-- Customize the background -->
+        <item name="android:textColor">@color/white</item> <!-- Customize the text color -->
+        <item name="android:fontFamily">@font/alegreya_italic</item>
+        <!-- Add more customizations if needed -->
+    </style>
+
+
 </resources>

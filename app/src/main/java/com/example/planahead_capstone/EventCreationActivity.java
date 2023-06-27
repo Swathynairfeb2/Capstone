@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -108,21 +109,111 @@ public class EventCreationActivity extends AppCompatActivity {
                 String eventTime = textViewEventTime.getText().toString();
                 String eventBudget = editTextEventBudget.getText().toString();
 
+                // Validate the input fields
+                if (eventName.isEmpty()) {
+                Toast toast=    Toast.makeText(EventCreationActivity.this, "Please enter event name", Toast.LENGTH_SHORT);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.custom_toast_background);
+                    TextView toastText = toastView.findViewById(android.R.id.message);
+                    toastText.setTextColor(getResources().getColor(R.color.white));
+
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+
+
+                    return;
+                }
+
+                if (eventLocation.isEmpty()) {
+                    Toast toast=     Toast.makeText(EventCreationActivity.this, "Please enter event location", Toast.LENGTH_SHORT);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.custom_toast_background);
+                    TextView toastText = toastView.findViewById(android.R.id.message);
+                    toastText.setTextColor(getResources().getColor(R.color.white));
+
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+
+                    return;
+                }
+
+                if (eventDate.isEmpty()) {
+                    Toast toast= Toast.makeText(EventCreationActivity.this, "Please select event date", Toast.LENGTH_SHORT);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.custom_toast_background);
+                    TextView toastText = toastView.findViewById(android.R.id.message);
+                    toastText.setTextColor(getResources().getColor(R.color.white));
+
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+
+                    return;
+                }
+
+                if (eventTime.isEmpty()) {
+                    Toast toast= Toast.makeText(EventCreationActivity.this, "Please select event time", Toast.LENGTH_SHORT);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.custom_toast_background);
+                    TextView toastText = toastView.findViewById(android.R.id.message);
+                    toastText.setTextColor(getResources().getColor(R.color.white));
+
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+
+                    return;
+                }
+
+                if (eventBudget.isEmpty()) {
+                    Toast toast= Toast.makeText(EventCreationActivity.this, "Please enter event budget", Toast.LENGTH_SHORT);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.custom_toast_background);
+                    TextView toastText = toastView.findViewById(android.R.id.message);
+                    toastText.setTextColor(getResources().getColor(R.color.white));
+
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+
+                    return;
+                }
+
+
+
                 // Save the event details to the database
                 boolean eventSaved = saveEventToDatabase(eventName, eventLocation, eventDate, eventTime, eventBudget);
 
                 if (eventSaved) {
-                    // Show a toast message to indicate successful event creation
-                    Toast.makeText(EventCreationActivity.this, "Event created: " + eventName, Toast.LENGTH_SHORT).show();
+//                    // Show a toast message to indicate successful event creation
+//                    Toast.makeText(EventCreationActivity.this, "Event created: " + eventName, Toast.LENGTH_SHORT).show();
+                    // Display the Toast
+                    Toast toast = Toast.makeText(EventCreationActivity.this, "Event created: " + eventName, Toast.LENGTH_SHORT);
+
+            // Apply the custom style
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.custom_toast_background);
+                    TextView toastText = toastView.findViewById(android.R.id.message);
+                    toastText.setTextColor(getResources().getColor(R.color.white));
+
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
 
                     // Finish the activity and go back to the previous screen
                     finish();
                 } else {
                     // Show a toast message indicating a failure in saving the event
-                    Toast.makeText(EventCreationActivity.this, "Failed to save the event", Toast.LENGTH_SHORT).show();
+                    Toast toast=  Toast.makeText(EventCreationActivity.this, "Failed to save the event", Toast.LENGTH_SHORT);
+                    // Apply the custom style
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.custom_toast_background);
+                    TextView toastText = toastView.findViewById(android.R.id.message);
+                    toastText.setTextColor(getResources().getColor(R.color.white));
+
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
                 }
             }
         });
+
+
 
         // Initialize the date picker listener
         datePickerListener = new DatePickerDialog.OnDateSetListener() {
