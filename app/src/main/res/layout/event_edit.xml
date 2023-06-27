@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- event_edit.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/purpleb">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Edit Event"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- Event Category -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Event Category"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinnerEventCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- Event Name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Event Name"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editTextEventName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:hint="Enter Event Name" />
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- Event Location -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Event Location"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextEventLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/alegreya_italic"
+            android:hint="Enter Event Location" />
+
+        <ImageView
+            android:id="@+id/imageViewLocationIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_location" />
+
+    </LinearLayout>
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- Event Date -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Event Date"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextEventDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/alegreya_italic"
+            android:hint="Enter Event Date" />
+
+        <ImageView
+            android:id="@+id/imageViewDateIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_date" />
+
+    </LinearLayout>
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- Event Time -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Event Time"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextEventTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/alegreya_italic"
+            android:hint="Enter Event Time" />
+
+        <ImageView
+            android:id="@+id/imageViewTimeIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_time" />
+
+    </LinearLayout>
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- Event Budget -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@color/white"
+        android:text="Event Budget"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextEventBudget"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/alegreya_italic"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:hint="Enter Event Budget" />
+
+    </LinearLayout>
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- Update Event Button -->
+    <Button
+        android:id="@+id/buttonUpdateEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/peachbutton"
+        android:textColor="@color/white"
+        android:fontFamily="@font/alegreya_italic"
+        android:text="Update Event"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

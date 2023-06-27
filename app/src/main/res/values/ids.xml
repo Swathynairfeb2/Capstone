@@ -5,4 +5,5 @@
 <!--    <item name="categoryRecyclerView" type="id">categoryRecyclerView</item>-->
 <!--    <item name="categoryLinearLayout2" type="id">categoryLinearLayout2</item>-->
 <!--    <item name="categoryLinearLayout1" type="id">categoryLinearLayout1</item>-->
+    <item name="budgetListView" type="id" />
 </resources>

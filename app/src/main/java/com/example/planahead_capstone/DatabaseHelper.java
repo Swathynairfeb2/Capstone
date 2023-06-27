@@ -40,10 +40,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_EVENT_CATEGORY_CATEGORY_ID = "category_id";
 
     //todo table
-    private static final String TABLE_TODO = "todo";
-    private static final String COLUMN_TODO_ID = "id";
-    private static final String COLUMN_TODO_NAME = "task_name";
-    private static final String COLUMN_TODO_COMPLETED = "completed";
+    public static final String TABLE_TODO = "todo";
+    public static final String COLUMN_TODO_ID = "id";
+    public static final String COLUMN_TODO_NAME = "task_name";
+    public static final String COLUMN_TODO_COMPLETED = "completed";
+    public static final String COLUMN_EVENTID = "event_Id";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -82,7 +84,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTodoTableQuery = "CREATE TABLE " + TABLE_TODO +
                 "(" + COLUMN_TODO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TODO_NAME + " TEXT, " +
-                COLUMN_TODO_COMPLETED + " INTEGER)";
+                COLUMN_TODO_COMPLETED + " INTEGER, " +
+                COLUMN_EVENTID + " TEXT)";
+
+
         db.execSQL(createTodoTableQuery);
     }
 
@@ -96,31 +101,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertTask(String taskName, boolean completed) {
+    public long insertTask(String taskName, boolean completed, String eventId) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_TODO_NAME, taskName);
         values.put(COLUMN_TODO_COMPLETED, completed ? 1 : 0);
+        values.put(COLUMN_EVENTID, eventId); // Corrected column name
         long taskId = db.insert(TABLE_TODO, null, values);
         db.close();
         return taskId;
     }
 
+
+
     public List<TodoTask> getAllTasks() {
         List<TodoTask> tasks = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        String[] columns = {COLUMN_TODO_ID, COLUMN_TODO_NAME, COLUMN_TODO_COMPLETED};
+        String[] columns = {COLUMN_TODO_ID, COLUMN_TODO_NAME, COLUMN_TODO_COMPLETED,COLUMN_EVENTID};
         Cursor cursor = db.query(TABLE_TODO, columns, null, null, null, null, null);
         if (cursor != null) {
             int columnIndexId = cursor.getColumnIndex(COLUMN_TODO_ID);
             int columnIndexName = cursor.getColumnIndex(COLUMN_TODO_NAME);
             int columnIndexCompleted = cursor.getColumnIndex(COLUMN_TODO_COMPLETED);
+            int columnIndexEventId = cursor.getColumnIndex(COLUMN_EVENTID);
             while (cursor.moveToNext()) {
                 long taskId = cursor.getLong(columnIndexId);
                 String taskName = cursor.getString(columnIndexName);
                 int completedInt = cursor.getInt(columnIndexCompleted);
                 boolean completed = (completedInt == 1);
-                TodoTask task = new TodoTask(taskId, taskName, completed);
+                String eventId = cursor.getString(columnIndexEventId);
+                TodoTask task = new TodoTask(taskId, taskName, completed, eventId);
                 tasks.add(task);
             }
             cursor.close();
@@ -181,4 +191,70 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public EventDetails getEventById(String eventId) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_EVENTS, null, COLUMN_EVENT_ID + " = ?",
+                new String[]{eventId}, null, null, null);
+
+        EventDetails event = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndexEventName = cursor.getColumnIndex(COLUMN_EVENT_NAME);
+            int columnIndexEventLocation = cursor.getColumnIndex(COLUMN_EVENT_LOCATION);
+            int columnIndexEventDate = cursor.getColumnIndex(COLUMN_EVENT_DATE);
+            int columnIndexEventTime = cursor.getColumnIndex(COLUMN_EVENT_TIME);
+            int columnIndexEventBudget = cursor.getColumnIndex(COLUMN_EVENT_BUDGET);
+
+            String eventName = cursor.getString(columnIndexEventName);
+            String eventLocation = cursor.getString(columnIndexEventLocation);
+            String eventDate = cursor.getString(columnIndexEventDate);
+            String eventTime = cursor.getString(columnIndexEventTime);
+            String eventBudget = cursor.getString(columnIndexEventBudget);
+
+            event = new EventDetails(eventId, eventName, eventLocation, eventDate, eventTime, eventBudget);
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return event;
+    }
+    public void updateEvent(int eventId, String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT_NAME, eventName);
+        values.put(COLUMN_EVENT_LOCATION, eventLocation);
+        values.put(COLUMN_EVENT_DATE, eventDate);
+        values.put(COLUMN_EVENT_TIME, eventTime);
+        values.put(COLUMN_EVENT_BUDGET, eventBudget);
+
+        db.update(TABLE_EVENTS, values, COLUMN_EVENT_ID + "= ?", new String[]{String.valueOf(eventId)});
+
+        db.close();
+    }
+    public void deleteEvent(String eventId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_EVENTS, COLUMN_EVENT_ID + " = ?", new String[]{eventId});
+        db.close();
+    }
+
+    public void updateCategory(int categoryId, String categoryName) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CATEGORY_NAME, categoryName);
+
+        db.update(TABLE_CATEGORY, values, COLUMN_CATEGORY_ID + " = ?", new String[]{String.valueOf(categoryId)});
+        db.close();
+    }
+    // Method to delete a category from the database
+    public void deleteCategory(int categoryId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CATEGORY, COLUMN_CATEGORY_ID + " = ?", new String[]{String.valueOf(categoryId)});
+        db.close();
+    }
 }

@@ -2,6 +2,7 @@ package com.example.planahead_capstone;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +54,22 @@ public class EventCreationActivity extends AppCompatActivity {
         editTextEventBudget = findViewById(R.id.editTextEventBudget);
         buttonCreateEvent = findViewById(R.id.buttonCreateEvent);
         spinnerEventCategory = findViewById(R.id.spinnerEventCategory);
+// Retrieve the passed data from the Intent
+        Intent intent = getIntent();
+        if (intent != null) {
+            String eventName = intent.getStringExtra("eventName");
+            String eventLocation = intent.getStringExtra("eventLocation");
+            String eventDate = intent.getStringExtra("eventDate");
+            String eventTime = intent.getStringExtra("eventTime");
+            String eventBudget = intent.getStringExtra("eventBudget");
+
+            // Set the retrieved data to the corresponding EditText fields
+            editTextEventName.setText(eventName);
+            editTextEventLocation.setText(eventLocation);
+            textViewEventDate.setText(eventDate);
+            textViewEventTime.setText(eventTime);
+            editTextEventBudget.setText(eventBudget);
+        }
 
         // Set click listeners for the picker icons
         ImageView imageViewLocationIcon = findViewById(R.id.imageViewLocationIcon);
@@ -189,6 +206,9 @@ public class EventCreationActivity extends AppCompatActivity {
             return false;
         }
     }
+
+
+
 
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();

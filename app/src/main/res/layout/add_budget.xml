@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purpleb">
+
+    <EditText
+        android:id="@+id/categoryEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Enter category"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:padding="16dp" />
+
+    <EditText
+        android:id="@+id/budgetAmountEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/categoryEditText"
+        android:layout_marginTop="16dp"
+        android:hint="Enter budget amount"
+        android:inputType="number"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:padding="16dp" />
+
+    <Button
+        android:id="@+id/addBudgetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/budgetAmountEditText"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:text="Add budget"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/peachbutton"
+        android:fontFamily="@font/alegreya_italic" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addBudgetButton"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:text="Cancel"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/peachbutton"
+        android:fontFamily="@font/alegreya_italic" />
+
+</RelativeLayout>

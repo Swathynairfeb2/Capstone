@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +21,7 @@ public class EventDetailPage extends AppCompatActivity {
     private TextView eventTimeTextView;
     private TextView eventBudgetTextView;
     private DatabaseHelper databaseHelper;
-    private String eventId;
+    private Integer eventId;
 
 
     @Override
@@ -52,6 +53,7 @@ public class EventDetailPage extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             UpcomingEvent event = intent.getParcelableExtra("event");
+
             if (event != null) {
                 updateEventDetails(event);
             }
@@ -60,6 +62,8 @@ public class EventDetailPage extends AppCompatActivity {
 
     private void updateEventDetails(UpcomingEvent event) {
         if (event != null) {
+            eventId = Integer.valueOf(event.getEventId());
+
             String eventName = event.getEventName();
             String eventLocation = event.getEventLocation();
             String eventDate = event.getEventDate();
@@ -75,11 +79,17 @@ public class EventDetailPage extends AppCompatActivity {
     }
 
     private void openTodoListPage() {
-        Intent intent = new Intent(this, TodoListActivity.class);
-        startActivity(intent);
+        if (eventId != null) {
+            Intent intent = new Intent(this, TodoListActivity.class);
+            intent.putExtra("eventId", eventId);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "eventId is null", Toast.LENGTH_SHORT).show();
+        }
     }
     private void openInvitationPage(){
         Intent intent = new Intent(this,InvitationActivity.class);
         startActivity(intent);
     }
+
 }

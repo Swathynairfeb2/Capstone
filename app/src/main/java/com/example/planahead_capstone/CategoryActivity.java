@@ -1,16 +1,20 @@
 package com.example.planahead_capstone;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +29,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
     private CategoryAdapter categoryAdapter;
     private ImageView addCategoryImageView;
     private DatabaseHelper categoryDBHelper;
+    private RecyclerView categoryRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         categoryAdapter = new CategoryAdapter(categoryList);
         categoryAdapter.setCategoryClickListener(this);
 
-        RecyclerView categoryRecyclerView = findViewById(R.id.categoryRecyclerView);
+        categoryRecyclerView = findViewById(R.id.categoryRecyclerView);
         categoryRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         categoryRecyclerView.setAdapter(categoryAdapter);
 
@@ -119,11 +124,87 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         startActivity(intent);
     }
 
+@Override
+public void onCategoryOptionClick(Category category) {
+    int position = categoryList.indexOf(category);
+    if (position != RecyclerView.NO_POSITION) {
+        RecyclerView.ViewHolder viewHolder = categoryRecyclerView.findViewHolderForAdapterPosition(position);
+        if (viewHolder instanceof CategoryAdapter.CategoryViewHolder) {
+            CategoryAdapter.CategoryViewHolder categoryViewHolder = (CategoryAdapter.CategoryViewHolder) viewHolder;
+            ImageView categoryOptionImageView = categoryViewHolder.categoryOptionImageView;
+
+            // Create a custom dialog-like popup
+            PopupWindow popupWindow = new PopupWindow(this);
+            popupWindow.setContentView(getLayoutInflater().inflate(R.layout.popup_menu_layout, null));
+            popupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+            popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+            popupWindow.setFocusable(true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            // Find and set click listeners for the menu options
+            TextView editOptionTextView = popupWindow.getContentView().findViewById(R.id.editOptionTextView);
+            TextView deleteOptionTextView = popupWindow.getContentView().findViewById(R.id.deleteOptionTextView);
+
+            editOptionTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showEditCategoryDialog(category);
+                    popupWindow.dismiss();
+                }
+            });
+
+            deleteOptionTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteCategory(category);
+                    popupWindow.dismiss();
+                }
+            });
+
+            // Show the popup window
+            int[] location = new int[2];
+            categoryOptionImageView.getLocationOnScreen(location);
+            int x = location[0] + categoryOptionImageView.getWidth();
+            int y = location[1] + categoryOptionImageView.getHeight();
+            popupWindow.showAtLocation(categoryOptionImageView, Gravity.NO_GRAVITY, x, y);
+        }
+    }
+}
+
+    private void showEditCategoryDialog(Category category) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.popup_add_category);
+
+        EditText categoryNameEditText = dialog.findViewById(R.id.categoryNameEditText);
+        Button addButton = dialog.findViewById(R.id.addButton);
+        addButton.setText("Update");
+
+        categoryNameEditText.setText(category.getCategoryName());
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String categoryName = categoryNameEditText.getText().toString();
+                if (!categoryName.isEmpty()) {
+                    categoryDBHelper.updateCategory(category.getId(), categoryName);
+                    loadCategories();
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void deleteCategory(Category category) {
+        categoryDBHelper.deleteCategory(category.getId());
+        loadCategories();
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(MenuItem item) {
-                    Fragment selectedFragment = null;
                     Intent intent;
 
                     switch (item.getItemId()) {
@@ -152,5 +233,3 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
                 }
             };
 }
-
-

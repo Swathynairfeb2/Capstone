@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/purpleb"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/budgetNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/editButton"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/editButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_below="@id/budgetAmountTextView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginEnd="40dp"
+        android:src="@drawable/ic_notification_badge" />
+
+    <TextView
+        android:id="@+id/budgetAmountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/budgetNameTextView"
+        android:layout_below="@id/budgetNameTextView"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/deleteButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_below="@id/budgetAmountTextView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-3dp"
+        android:layout_marginEnd="14dp"
+        android:src="@drawable/icon_delete" />
+
+</RelativeLayout>

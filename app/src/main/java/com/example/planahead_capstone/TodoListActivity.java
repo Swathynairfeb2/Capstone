@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,6 +19,7 @@ public class TodoListActivity extends Activity {
     private List<TodoTask> tasks;
     private TodoTaskAdapter adapter;
     private DatabaseHelper databaseHelper;
+    private String eventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +27,19 @@ public class TodoListActivity extends Activity {
         setContentView(R.layout.todo_list_page);
 
         databaseHelper = new DatabaseHelper(this);
+        Intent intent = getIntent();
+        if (intent != null) {
+            eventId = String.valueOf(intent.getIntExtra("eventId", 0));
 
+        }
         todoListView = findViewById(R.id.todoListView);
         addTaskButton = findViewById(R.id.addTaskButton);
 
         tasks = new ArrayList<>();
 
-        adapter = new TodoTaskAdapter(this, tasks);
-        todoListView.setAdapter(adapter);
+        adapter = new TodoTaskAdapter(this, tasks, eventId); // Pass the eventId to the adapter
 
+        todoListView.setAdapter(adapter);
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,21 +49,15 @@ public class TodoListActivity extends Activity {
             }
         });
 
-        todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TodoTask task = tasks.get(position);
-                Toast.makeText(TodoListActivity.this, "Clicked: " + task.getName(), Toast.LENGTH_SHORT).show();
-            }
+        todoListView.setOnItemClickListener((parent, view, position, id) -> {
+            TodoTask task = tasks.get(position);
+            Toast.makeText(TodoListActivity.this, "Clicked: " + task.getName(), Toast.LENGTH_SHORT).show();
         });
 
-        todoListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                tasks.remove(position);
-                adapter.notifyDataSetChanged();
-                return true;
-            }
+        todoListView.setOnItemLongClickListener((parent, view, position, id) -> {
+            tasks.remove(position);
+            adapter.notifyDataSetChanged();
+            return true;
         });
     }
 
@@ -67,15 +65,19 @@ public class TodoListActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             String taskName = data.getStringExtra("taskName");
 
             if (taskName != null && !taskName.isEmpty()) {
-                long taskId = databaseHelper.insertTask(taskName, false);
-                TodoTask todoTask = new TodoTask(taskId, taskName, false);
-                tasks.add(todoTask);
-                adapter.notifyDataSetChanged();
+                long taskId = databaseHelper.insertTask(taskName, false, eventId);
+
+                if (taskId != -1) {
+                    TodoTask todoTask = new TodoTask(taskId, taskName, false, eventId);
+                    adapter.addTask(todoTask);
+                    Toast.makeText(TodoListActivity.this, "Task added", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
+
 }

@@ -16,7 +16,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginEnd="10dp"
         android:transitionName="logo_image"
-        android:src="@drawable/img_splash"
+        android:src="@drawable/planahead_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
