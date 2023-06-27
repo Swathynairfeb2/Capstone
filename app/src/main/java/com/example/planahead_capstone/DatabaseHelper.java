@@ -47,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_EVENTID = "event_Id";
 
 
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -86,8 +87,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TODO_NAME + " TEXT, " +
                 COLUMN_TODO_COMPLETED + " INTEGER, " +
                 COLUMN_EVENTID + " TEXT)";
-
-
         db.execSQL(createTodoTableQuery);
     }
 
