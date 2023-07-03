@@ -172,6 +172,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categoryList;
     }
 
+    public List<EventDetails> getUpcomingEvents() {
+        List<EventDetails> upcomingEvents = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EVENTS, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndexEventId = cursor.getColumnIndex(COLUMN_EVENT_ID);
+            int columnIndexEventName = cursor.getColumnIndex(COLUMN_EVENT_NAME);
+            int columnIndexEventLocation = cursor.getColumnIndex(COLUMN_EVENT_LOCATION);
+            int columnIndexEventDate = cursor.getColumnIndex(COLUMN_EVENT_DATE);
+            int columnIndexEventTime = cursor.getColumnIndex(COLUMN_EVENT_TIME);
+            int columnIndexEventBudget = cursor.getColumnIndex(COLUMN_EVENT_BUDGET);
+
+            do {
+                String eventId = cursor.getString(columnIndexEventId);
+                String eventName = cursor.getString(columnIndexEventName);
+                String eventLocation = cursor.getString(columnIndexEventLocation);
+                String eventDate = cursor.getString(columnIndexEventDate);
+                String eventTime = cursor.getString(columnIndexEventTime);
+                String eventBudget = cursor.getString(columnIndexEventBudget);
+
+                EventDetails event = new EventDetails(eventId, eventName, eventLocation, eventDate, eventTime, eventBudget);
+                upcomingEvents.add(event);
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return upcomingEvents;
+    }
+
+
+
+
     public void mapEventToCategory(int eventId, int categoryId) {
         SQLiteDatabase db = getWritableDatabase();
 

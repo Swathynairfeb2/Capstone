@@ -7,5 +7,6 @@
     <string name="baptism">BAPTISM</string>
     <string name="EventCategories">EVENT CATEGORIES</string>
     <string name="add_task">+ Add Task</string>
+    <string name="event_image">event_image</string>
 
 </resources>
