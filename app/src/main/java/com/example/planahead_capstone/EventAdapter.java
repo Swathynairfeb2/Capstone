@@ -63,6 +63,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 intent1.putExtra("eventId", clickedEvent.getEventId()); // Pass eventId as a String extra
                 intent1.putExtra("events", clickedEvent); // Pass the entire EventDetails object as a Parcelable extra (optional)
                 v.getContext().startActivity(intent1);
+
+
             }
         });
     }

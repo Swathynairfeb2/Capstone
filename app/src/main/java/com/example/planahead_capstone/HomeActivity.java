@@ -76,6 +76,9 @@ public class HomeActivity extends AppCompatActivity {
 
         eventRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 
+
+
+
         //Initialize ViewPager
         viewPager = findViewById(R.id.viewPager);
         setupViewPager(viewPager);

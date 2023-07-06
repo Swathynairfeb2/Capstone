@@ -32,6 +32,7 @@ public class EventDetailPage extends AppCompatActivity {
     private ImageView addTaskImage;
     private ImageView eventInvitationImage;
     private ImageView budgetImage;
+    private ImageView eventoption;
     private TextView invitationTextView;
     private TextView eventNameTextView;
     private TextView eventLocationTextView;
@@ -56,10 +57,11 @@ public class EventDetailPage extends AppCompatActivity {
         eventTimeTextView = findViewById(R.id.eventTimeTextView);
         eventBudgetTextView = findViewById(R.id.eventBudgetTextView);
         eventInvitationImage = findViewById(R.id.invitationImageView);
-
+        eventoption = findViewById(R.id.eventoption);
         budgetImage=findViewById(R.id.budgetImageView);
         databaseHelper = new DatabaseHelper(this);
-        //eventid = Integer.parseInt(eventId);
+
+
         // Bottom Navigation View
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
@@ -111,6 +113,7 @@ public class EventDetailPage extends AppCompatActivity {
                 // Perform necessary operations with the EventDetails object
                 updateEventDetails1(event1);
                 eventId = event1.getEventId();
+
             }
         }
 
@@ -147,7 +150,10 @@ public class EventDetailPage extends AppCompatActivity {
             eventDateTextView.setText(eventDate);
             eventTimeTextView.setText(eventTime);
             eventBudgetTextView.setText(eventBudget);
-
+            addTaskImage.setVisibility(View.GONE);
+            eventInvitationImage.setVisibility(View.GONE);
+            budgetImage.setVisibility(View.GONE);
+            eventoption.setVisibility(View.GONE);
 
 
             // Get the current date
