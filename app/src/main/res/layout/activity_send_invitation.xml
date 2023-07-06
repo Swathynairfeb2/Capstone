@@ -1,0 +1,86 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/purpleb"
+    android:fontFamily="@font/alegreya_italic"
+    android:textColor="@android:color/white">
+
+    <EditText
+        android:id="@+id/guestNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/white"
+        android:fontFamily="@font/alegreya_italic"
+        android:textColor="@android:color/white"
+        android:hint="Guest Name" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/white"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/alegreya_italic"
+        android:hint="Email" />
+
+    <EditText
+        android:id="@+id/phoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/white"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/alegreya_italic"
+        android:hint="Phone" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add Guest"
+        android:fontFamily="@font/alegreya_italic"
+        android:backgroundTint="@color/peachbutton" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical">
+
+        <CheckBox
+            android:id="@+id/selectAllCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_italic"
+            android:buttonTint="@color/peachbutton"
+            android:textColor="@android:color/white"
+            android:text="Select All" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:fontFamily="@font/alegreya_italic"
+            android:text="Send"
+            android:backgroundTint="@color/peachbutton"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/guestListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_italic"
+            android:textColor="@android:color/white"
+            android:orientation="vertical" />
+
+    </ScrollView>
+</LinearLayout>

@@ -33,8 +33,6 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
         this.tasks = tasks;
         this.databaseHelper = new DatabaseHelper(context);
         this.eventid = eventId;
-        Toast.makeText(context, eventid, Toast.LENGTH_SHORT).show();
-
         loadTasksFromDatabase();
     }
 

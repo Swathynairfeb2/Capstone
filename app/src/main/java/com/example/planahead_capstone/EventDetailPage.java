@@ -1,10 +1,8 @@
 package com.example.planahead_capstone;
-import android.app.AlertDialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,6 +29,7 @@ import nl.dionsegijn.konfetti.models.Size;
 public class EventDetailPage extends AppCompatActivity {
 
     private ImageView addTaskImage;
+    private ImageView eventInvitationImage;
     private ImageView budgetImage;
     private TextView invitationTextView;
     private TextView eventNameTextView;
@@ -39,6 +39,7 @@ public class EventDetailPage extends AppCompatActivity {
     private TextView eventBudgetTextView;
     private DatabaseHelper databaseHelper;
     private String eventId;
+    UpcomingEvent event;
     private int eventid;
     private String eventName;
 
@@ -53,9 +54,11 @@ public class EventDetailPage extends AppCompatActivity {
         eventDateTextView = findViewById(R.id.eventDateTextView);
         eventTimeTextView = findViewById(R.id.eventTimeTextView);
         eventBudgetTextView = findViewById(R.id.eventBudgetTextView);
+        eventInvitationImage = findViewById(R.id.invitationImageView);
+
         budgetImage=findViewById(R.id.budgetImageView);
         databaseHelper = new DatabaseHelper(this);
-        eventid = Integer.parseInt(eventId);
+        //eventid = Integer.parseInt(eventId);
         // Bottom Navigation View
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
@@ -63,55 +66,42 @@ public class EventDetailPage extends AppCompatActivity {
         budgetImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddBudgetPage();
+                // openAddBudgetPage();
             }
         });
         ImageView eventOptionImage = findViewById(R.id.eventoption);
         eventOptionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupWindow(v);
+                // showPopupWindow(v);
             }
         });
 
         addTaskImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //openTodoListPage();
+                openTodoListPage();
             }
-
         });
-
-
-
+        eventInvitationImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openInvitationPage();
+            }
+        });
 
         Intent intent = getIntent();
         if (intent != null) {
-            UpcomingEvent event = intent.getParcelableExtra("event");
+            event = intent.getParcelableExtra("event");
             if (event != null) {
                 updateEventDetails(event);
-                eventId = event.getEventId();
-                // eventId = Integer.valueOf(event.getEventId());
-            }
-        }
-
-
-
-        Intent intent1 = getIntent();
-        if (intent1 != null) {
-            String eventId = intent1.getStringExtra("eventId"); // Retrieve the eventId as a String extra
-            EventDetails event1 = intent1.getParcelableExtra("events"); // Retrieve the entire EventDetails object as a Parcelable extra (optional)
-
-            if (event1 != null) {
-                // Perform necessary operations with the EventDetails object
-                updateEventDetails1(event1);
-                eventId = event1.getEventId();
             }
         }
     }
 
     private void updateEventDetails(UpcomingEvent event) {
         if (event != null) {
+            eventId = event.getEventId();
             String eventName = event.getEventName();
             String eventLocation = event.getEventLocation();
             String eventDate = event.getEventDate();
@@ -123,69 +113,27 @@ public class EventDetailPage extends AppCompatActivity {
             eventDateTextView.setText(eventDate);
             eventTimeTextView.setText(eventTime);
             eventBudgetTextView.setText(eventBudget);
-
-
-
-        }
-
-
-    }
-
-
-    private void updateEventDetails1(EventDetails event1) {
-        if (event1 != null) {
-            String eventName = event1.getEventName();
-            String eventLocation = event1.getEventLocation();
-            String eventDate = event1.getEventDate();
-            String eventTime = event1.getEventTime();
-            String eventBudget = event1.getEventBudget();
-
-            eventNameTextView.setText(eventName);
-            eventLocationTextView.setText(eventLocation);
-            eventDateTextView.setText(eventDate);
-            eventTimeTextView.setText(eventTime);
-            eventBudgetTextView.setText(eventBudget);
-
-
-
-            // Get the current date
-            Calendar calendar = Calendar.getInstance();
-            int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-            int currentMonth = calendar.get(Calendar.MONTH) + 1; // Adding 1 because Calendar.MONTH starts from 0
-            int currentYear = calendar.get(Calendar.YEAR);
-
-            // Compare the event date with the current date
-            String[] dateParts = eventDate.split("/");
-            int eventDay = Integer.parseInt(dateParts[1]);
-            int eventMonth = Integer.parseInt(dateParts[0]);
-            int eventYear = Integer.parseInt(dateParts[2]);
-
-            if (eventDay == currentDay && eventMonth == currentMonth && eventYear == currentYear) {
-                // Add confetti animation here
-                // You can use a library or implement your own confetti animation logic
-                triggerConfettiAnimation();
-
-            }
-
-
         }
     }
 
-
-    private void triggerConfettiAnimation() {
-        KonfettiView konfettiView = findViewById(R.id.confettiView);
-        konfettiView.build()
-                .addColors(Color.parseColor("#4E376B"), Color.parseColor("#FF018786"),Color.parseColor("#FF03DAC5"), Color.parseColor("#F78B64"), Color.parseColor("#3E2B59"))
-                .setDirection(0, 359)
-                .setSpeed(1f, 5f)
-                .setFadeOutEnabled(true)
-                .setTimeToLive(2000L)
-                .addShapes(Shape.RECT, Shape.CIRCLE)
-                .addSizes(new Size(12, 5))
-                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
-                .streamFor(300, 5000L);
+    private void openTodoListPage() {
+        if (eventId != null) {
+            Intent intent = new Intent(this, TodoListActivity.class);
+            intent.putExtra("eventId", eventId);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "eventId is null", Toast.LENGTH_SHORT).show();
+        }
     }
-
+    private void openInvitationPage() {
+        if (event != null) {
+            Intent intent = new Intent(this, InvitationActivity.class);
+            intent.putExtra("event", event);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "eventId is null", Toast.LENGTH_SHORT).show();
+        }
+    }
     private void showPopupWindow(View anchorView) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_menu_layout, null);
