@@ -1,3 +1,4 @@
+
 package com.example.planahead_capstone;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,11 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +27,6 @@ import nl.dionsegijn.konfetti.models.Size;
 public class EventDetailPage extends AppCompatActivity {
 
     private ImageView addTaskImage;
-    private ImageView budgetImage;
     private TextView invitationTextView;
     private TextView eventNameTextView;
     private TextView eventLocationTextView;
@@ -38,6 +34,8 @@ public class EventDetailPage extends AppCompatActivity {
     private TextView eventTimeTextView;
     private TextView eventBudgetTextView;
     private DatabaseHelper databaseHelper;
+    private Integer eventId;
+
     private String eventId;
     private int eventid;
     private String eventName;
@@ -53,8 +51,9 @@ public class EventDetailPage extends AppCompatActivity {
         eventDateTextView = findViewById(R.id.eventDateTextView);
         eventTimeTextView = findViewById(R.id.eventTimeTextView);
         eventBudgetTextView = findViewById(R.id.eventBudgetTextView);
-        budgetImage=findViewById(R.id.budgetImageView);
+
         databaseHelper = new DatabaseHelper(this);
+
         eventid = Integer.parseInt(eventId);
         // Bottom Navigation View
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -81,7 +80,7 @@ public class EventDetailPage extends AppCompatActivity {
             }
 
         });
- 
+
 
 
 
@@ -112,6 +111,8 @@ public class EventDetailPage extends AppCompatActivity {
 
     private void updateEventDetails(UpcomingEvent event) {
         if (event != null) {
+            eventId = Integer.valueOf(event.getEventId());
+
             String eventName = event.getEventName();
             String eventLocation = event.getEventLocation();
             String eventDate = event.getEventDate();
@@ -186,6 +187,14 @@ private void triggerConfettiAnimation() {
             .streamFor(300, 5000L);
 }
 
+    private void openTodoListPage() {
+        if (eventId != null) {
+            Intent intent = new Intent(this, TodoListActivity.class);
+            intent.putExtra("eventId", eventId);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "eventId is null", Toast.LENGTH_SHORT).show();
+        }
     private void showPopupWindow(View anchorView) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_menu_layout, null);

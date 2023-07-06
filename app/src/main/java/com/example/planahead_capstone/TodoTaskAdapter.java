@@ -1,63 +1,3 @@
-//package com.example.planahead_capstone;
-//
-//import android.content.Context;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.ArrayAdapter;
-//import android.widget.Button;
-//import android.widget.CheckBox;
-//import android.widget.ImageButton;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//
-//import java.util.List;
-//
-//public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
-//
-//    private Context context;
-//    private List<TodoTask> tasks;
-//
-//    public TodoTaskAdapter(Context context, List<TodoTask> tasks) {
-//        super(context, 0, tasks);
-//        this.context = context;
-//        this.tasks = tasks;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        View view = convertView;
-//
-//        if (view == null) {
-//            LayoutInflater inflater = LayoutInflater.from(context);
-//            view = inflater.inflate(R.layout.list_item_todo, parent, false);
-//        }
-//
-//        TodoTask task = tasks.get(position);
-//
-//        CheckBox checkBox = view.findViewById(R.id.taskCheckbox);
-//        checkBox.setChecked(task.isCompleted());
-//        checkBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                task.setCompleted(checkBox.isChecked());
-//            }
-//        });
-//
-//        ImageView deleteButton=view.findViewById(R.id.deleteButton);
-//        deleteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                tasks.remove(position);
-//                notifyDataSetChanged();
-//            }
-//        });
-//        TextView taskNameTextView = view.findViewById(R.id.taskNameTextView);
-//        taskNameTextView.setText(task.getName());
-//
-//        return view;
-//    }
-//}
 package com.example.planahead_capstone;
 
 import android.content.ContentValues;
@@ -93,6 +33,8 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
         this.tasks = tasks;
         this.databaseHelper = new DatabaseHelper(context);
         this.eventid = eventId;
+        Toast.makeText(context, eventid, Toast.LENGTH_SHORT).show();
+
         loadTasksFromDatabase();
     }
 
