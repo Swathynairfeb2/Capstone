@@ -104,7 +104,7 @@ public class EventDetailPage extends AppCompatActivity {
 
         Intent intent1 = getIntent();
         if (intent1 != null) {
-            String eventId = intent1.getStringExtra("eventId"); // Retrieve the eventId as a String extra
+           String eventId = intent1.getStringExtra("eventId"); // Retrieve the eventId as a String extra
             EventDetails event1 = intent1.getParcelableExtra("events"); // Retrieve the entire EventDetails object as a Parcelable extra (optional)
 
             if (event1 != null) {
