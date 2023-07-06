@@ -3,20 +3,24 @@
     <item
         android:id="@+id/menu_home"
         android:icon="@drawable/outline_home_black_24dp"
-        android:title="Home" />
+        android:title="Home"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_categories"
         android:icon="@drawable/outline_menu_black_24dp"
-        android:title="Categories" />
+        android:title="Categories"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/menu_my_events"
         android:icon="@drawable/twotone_event_black_24dp"
-        android:title="My Events" />
+        android:title="My Events"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/menu_my_account"
         android:icon="@drawable/account"
-        android:title="My Account" />
+        android:title="My Account"
+        app:showAsAction="ifRoom"/>
 </menu>

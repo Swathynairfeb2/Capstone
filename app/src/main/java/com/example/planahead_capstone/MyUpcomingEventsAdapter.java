@@ -124,53 +124,55 @@ public class MyUpcomingEventsAdapter extends RecyclerView.Adapter<MyUpcomingEven
         handler.removeCallbacks(runnable);
     }
 
-    private void updateCountdownTimers() {
-        // Get the current time
-        long currentTime = System.currentTimeMillis();
+private void updateCountdownTimers() {
+    // Get the current time
+    long currentTime = System.currentTimeMillis();
 
-        for (UpcomingEvent event : upcomingEventList) {
-            // Get the event date and time
-            String eventDateTime = event.getEventDate() + " " + event.getEventTime();
+    for (UpcomingEvent event : upcomingEventList) {
+        // Get the event date and time
+        String eventDateTime = event.getEventDate() + " " + event.getEventTime();
 
-            // Parse the event date and time to a Date object
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
-            Date eventDate = null;
-            try {
-                eventDate = format.parse(eventDateTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        // Parse the event date and time to a Date object
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
 
-            if (eventDate != null) {
-                // Calculate the time difference between the current time and event time
-                long timeDiff = eventDate.getTime() - currentTime;
-
-                if (timeDiff > 0) {
-                    // Format the time difference as a countdown text
-                    String countdownText = formatCountdownText(timeDiff);
-
-                    // Update the countdown text for the event
-                    event.setCountdownText(countdownText);
-                } else {
-                    // Event has passed, set countdown text to "Expired"
-                    event.setCountdownText("Expired");
-                }
-            }
+        Date eventDate = null;
+        try {
+            eventDate = format.parse(eventDateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        notifyDataSetChanged();
+        if (eventDate != null) {
+            // Calculate the time difference between the current time and event time
+            long timeDiff = eventDate.getTime() - currentTime;
+
+            if (timeDiff > 0) {
+                // Format the time difference as a countdown text
+                String countdownText = formatCountdownText(timeDiff);
+
+                // Update the countdown text for the event
+                event.setCountdownText(countdownText);
+            } else {
+                // Event has passed, set countdown text to "Expired"
+                event.setCountdownText("Expired");
+            }
+        }
     }
 
-    private String formatCountdownText(long timeDiff) {
-        // Convert the time difference to days, hours, minutes, and seconds
-        long days = TimeUnit.MILLISECONDS.toDays(timeDiff);
-        long hours = TimeUnit.MILLISECONDS.toHours(timeDiff) % 24;
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDiff) % 60;
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(timeDiff) % 60;
+    notifyDataSetChanged();
+}
 
-        // Create a formatted countdown text
-        return String.format(Locale.getDefault(), "%d:%02d:%02d:%02d", days, hours, minutes, seconds);
-    }
+private String formatCountdownText(long timeDiff) {
+    // Convert the time difference to days, hours, minutes, and seconds
+    long days = TimeUnit.MILLISECONDS.toDays(timeDiff);
+    long hours = TimeUnit.MILLISECONDS.toHours(timeDiff) % 24;
+    long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDiff) % 60;
+    long seconds = TimeUnit.MILLISECONDS.toSeconds(timeDiff) % 60;
+
+    // Create a formatted countdown text
+    return String.format(Locale.getDefault(), "%d:%02d:%02d:%02d", days, hours, minutes, seconds);
+}
 
 
 }
+

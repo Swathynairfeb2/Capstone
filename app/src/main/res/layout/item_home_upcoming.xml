@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_marginTop="45dp">
+
+    <ImageView
+        android:id="@+id/eventImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_event"
+        android:contentDescription="@string/event_image"
+        android:adjustViewBounds="true" />
+
+    <TextView
+        android:id="@+id/eventNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/eventImageView"
+        android:gravity="center"
+        android:text="Event Name"
+        android:textColor="@color/white"
+        android:fontFamily="@font/alegreya_italic"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/countdownTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/eventNameTextView"
+        android:gravity="center"
+        android:text="Countdown: 00:00:00"
+        android:textColor="@color/white"
+        android:fontFamily="@font/alegreya_italic"
+        android:textStyle="bold"
+        android:textSize="25sp" />
+
+</RelativeLayout>

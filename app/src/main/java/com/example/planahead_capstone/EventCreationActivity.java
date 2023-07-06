@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Calendar;
 import java.util.List;
@@ -213,21 +217,30 @@ public class EventCreationActivity extends AppCompatActivity {
             }
         });
 
-
-
         // Initialize the date picker listener
         datePickerListener = new DatePickerDialog.OnDateSetListener() {
             @Override
+            //public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 updateDate(year, month, dayOfMonth);
             }
         };
 
-        // Initialize the time picker listener
+//        // Initialize the time picker listener
         timePickerListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                updateTime(hourOfDay, minute);
+                Calendar selectedTime = Calendar.getInstance();
+                selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                selectedTime.set(Calendar.MINUTE, minute);
+
+                Calendar currentTime = Calendar.getInstance();
+                if (selectedTime.before(currentTime)) {
+                    // Selected time is before the current time, show an error message
+                    Toast.makeText(EventCreationActivity.this, "Please select a valid time", Toast.LENGTH_SHORT).show();
+                } else {
+                    updateTime(hourOfDay, minute);
+                }
             }
         };
 
@@ -298,18 +311,16 @@ public class EventCreationActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     private void showDatePicker() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+    Calendar calendar = Calendar.getInstance();
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH);
+    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, year, month, dayOfMonth);
-        datePickerDialog.show();
-    }
+    DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, year, month, dayOfMonth);
+    datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000); // Set the minimum date to today
+    datePickerDialog.show();
+}
 
     private void updateDate(int year, int month, int dayOfMonth) {
         String selectedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", month + 1, dayOfMonth, year);
@@ -337,4 +348,38 @@ public class EventCreationActivity extends AppCompatActivity {
 
         spinnerEventCategory.setAdapter(categoryAdapter);
     }
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    Fragment selectedFragment = null;
+                    Intent intent;
+
+                    switch (item.getItemId()) {
+                        case R.id.menu_home:
+                            // Handle the home action
+                            intent = new Intent(EventCreationActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_categories:
+                            // Handle the categories action
+                            intent = new Intent(EventCreationActivity.this, CategoryActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_my_events:
+                            // Start the EventCreationActivity
+                            intent = new Intent(EventCreationActivity.this, EventsActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.menu_my_account:
+                            // Handle the my account action
+                            Toast.makeText(EventCreationActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+
+                    return true;
+                }
+            };
 }

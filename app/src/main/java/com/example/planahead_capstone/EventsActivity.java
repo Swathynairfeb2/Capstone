@@ -34,7 +34,9 @@ public class EventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_upcoming_event);
-
+        // Bottom Navigation View
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
         // Get upcoming events from the database
         upcomingEvents = getUpcomingEvents();
 

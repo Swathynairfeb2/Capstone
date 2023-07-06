@@ -35,7 +35,7 @@
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="AIzaSyA46S0eqhkMqjzHTHPIIyXvWuDkmL2QEes" />
 
         <!-- Activities -->
         <activity
@@ -65,6 +65,8 @@
         <activity android:name=".AddTaskActivity"></activity>
         <activity android:name="InvitationActivity"></activity>
         <activity android:name=".SendInvitationActivity"></activity>
+        <activity android:name=".AddBudgetActivity"></activity>
+        <activity android:name=".ThemeIdeasActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
