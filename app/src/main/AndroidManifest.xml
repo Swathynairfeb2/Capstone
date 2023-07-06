@@ -67,6 +67,7 @@
         <activity android:name=".SendInvitationActivity"></activity>
         <activity android:name=".AddBudgetActivity"></activity>
         <activity android:name=".ThemeIdeasActivity"></activity>
+        <activity android:name=".EditEventActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
