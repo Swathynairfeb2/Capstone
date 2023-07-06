@@ -1,7 +1,11 @@
-
 package com.example.planahead_capstone;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,9 +39,7 @@ public class EventDetailPage extends AppCompatActivity {
     private TextView eventBudgetTextView;
     private DatabaseHelper databaseHelper;
     private String eventId;
-
     UpcomingEvent event;
-
     private int eventid;
     private String eventName;
 
@@ -55,7 +58,7 @@ public class EventDetailPage extends AppCompatActivity {
 
         budgetImage=findViewById(R.id.budgetImageView);
         databaseHelper = new DatabaseHelper(this);
-        eventid = Integer.parseInt(eventId);
+        //eventid = Integer.parseInt(eventId);
         // Bottom Navigation View
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
@@ -63,14 +66,14 @@ public class EventDetailPage extends AppCompatActivity {
         budgetImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddBudgetPage();
+                // openAddBudgetPage();
             }
         });
         ImageView eventOptionImage = findViewById(R.id.eventoption);
         eventOptionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupWindow(v);
+                // showPopupWindow(v);
             }
         });
 
@@ -89,7 +92,7 @@ public class EventDetailPage extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            UpcomingEvent event = intent.getParcelableExtra("event");
+            event = intent.getParcelableExtra("event");
             if (event != null) {
                 updateEventDetails(event);
             }
@@ -98,8 +101,7 @@ public class EventDetailPage extends AppCompatActivity {
 
     private void updateEventDetails(UpcomingEvent event) {
         if (event != null) {
-            eventid = Integer.valueOf(event.getEventId());
-
+            eventId = event.getEventId();
             String eventName = event.getEventName();
             String eventLocation = event.getEventLocation();
             String eventDate = event.getEventDate();
@@ -115,9 +117,9 @@ public class EventDetailPage extends AppCompatActivity {
     }
 
     private void openTodoListPage() {
-        if (eventid != null) {
+        if (eventId != null) {
             Intent intent = new Intent(this, TodoListActivity.class);
-            intent.putExtra("eventId", eventid);
+            intent.putExtra("eventId", eventId);
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "eventId is null", Toast.LENGTH_SHORT).show();
@@ -125,12 +127,13 @@ public class EventDetailPage extends AppCompatActivity {
     }
     private void openInvitationPage() {
         if (event != null) {
-            Intent intent = new Intent(this,InvitationActivity.class);
+            Intent intent = new Intent(this, InvitationActivity.class);
             intent.putExtra("event", event);
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "eventId is null", Toast.LENGTH_SHORT).show();
         }
+    }
     private void showPopupWindow(View anchorView) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_menu_layout, null);

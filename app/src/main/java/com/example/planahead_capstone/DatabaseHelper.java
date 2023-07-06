@@ -102,6 +102,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_BUDGET_EVENT_ID + " TEXT)";
         db.execSQL(createBudgetTableQuery);
 
+        String createTodoTableQuery = "CREATE TABLE " + TABLE_TODO +
+                "(" + COLUMN_TODO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TODO_NAME + " TEXT, " +
+                COLUMN_TODO_COMPLETED + " INTEGER, " +
+                COLUMN_EVENTID + " TEXT)";
+        db.execSQL(createTodoTableQuery);
+
+        String CREATE_TABLE_GUESTS = "CREATE TABLE " + TABLE_GUESTS + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_NAME + " TEXT,"
+                + COLUMN_EMAIL + " TEXT,"
+                + COLUMN_PHONE + " TEXT,"
+                + COLUMN_EVID + " TEXT"
+                + ")";
+        db.execSQL(CREATE_TABLE_GUESTS);
+
 
     }
 
