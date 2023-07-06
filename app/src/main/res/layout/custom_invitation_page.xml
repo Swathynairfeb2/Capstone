@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:textColor="#0C0C0C"
-    android:textSize="100dp">
+    android:textSize="100dp"
+    android:background="@color/purpleb">
 
     <!-- First Layout - Text Boxes -->
 
@@ -159,8 +160,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"
-
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/purpleb">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,7 +172,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="Color" />
+                android:text="Color"
+                android:backgroundTint="@color/peachbutton"
+                android:textColor="@color/white"
+                android:fontFamily="@font/alegreya_italic" />
 
             <Button
                 android:id="@+id/fontButton"
@@ -179,14 +183,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Font"
-                android:textColor="@color/white" />
+                android:backgroundTint="@color/peachbutton"
+                android:textColor="@color/white"
+                android:fontFamily="@font/alegreya_italic" />
 
             <Button
                 android:id="@+id/backgroundButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Background" />
+                android:text="Background"
+                android:backgroundTint="@color/peachbutton"
+                android:textColor="@color/white"
+                android:fontFamily="@font/alegreya_italic"/>
         </LinearLayout>
 
         <LinearLayout
@@ -200,7 +209,9 @@
                 android:layout_marginStart="60dp"
                 android:gravity="center"
                 android:text="Save"
-                android:textColor="@color/white" />
+                android:backgroundTint="@color/peachbutton"
+                android:textColor="@color/white"
+                android:fontFamily="@font/alegreya_italic" />
 
             <Button
                 android:id="@+id/viewPdfButton"
@@ -208,14 +219,18 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:text="View"
-                android:textColor="@color/white" />
+                android:backgroundTint="@color/peachbutton"
+                android:textColor="@color/white"
+                android:fontFamily="@font/alegreya_italic" />
             <Button
                 android:id="@+id/sendInvitationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:text="send"
-                android:textColor="@color/white" />
+                android:backgroundTint="@color/peachbutton"
+                android:textColor="@color/white"
+                android:fontFamily="@font/alegreya_italic" />
         </LinearLayout>
 
     </LinearLayout>
