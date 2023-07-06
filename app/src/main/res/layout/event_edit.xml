@@ -236,6 +236,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_bottom_navigation"
+        app:itemTextAppearance="@style/BottomMenuTextStyle"
+        style="@style/CustomBottomNavigationStyle"/>
 
 </LinearLayout>

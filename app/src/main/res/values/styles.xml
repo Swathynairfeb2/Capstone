@@ -25,5 +25,19 @@
         <!-- Add more customizations if needed -->
     </style>
 
+    <style name="CustomBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/purpleb</item>
+        <item name="itemIconTint">@color/peachbutton</item>
+        <item name="android:textColor">@color/bottom_menu_text_color</item>
+        <item name="android:fontFamily">@font/alegreya_italic</item>
+    </style>
+
+    <style name="BottomMenuTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/bottom_menu_text_color</item>
+        <item name="android:fontFamily">@font/alegreya_italic</item>
+    </style>
+
+
+
 
 </resources>

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class EventDetails implements Parcelable {
+
     private String eventId;
     private String eventName;
     private String eventLocation;

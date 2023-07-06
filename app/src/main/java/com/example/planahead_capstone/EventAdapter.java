@@ -22,6 +22,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     private List<EventDetails> events;
     private Handler handler;
     private Runnable runnable;
+
+
     public void setEvents(List<EventDetails> events) {
         this.events = events;
         handler = new Handler();
@@ -32,7 +34,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 handler.postDelayed(this, 1000); // Update countdown every 1 second
             }
         };
-       // notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -83,20 +85,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         }
 
         public void bind(EventDetails event) {
-            eventImageView.setImageResource(R.drawable.home_event1);
+            eventImageView.setImageResource(R.drawable.home_event);
             eventNameTextView.setText(event.getEventName());
             countdownTextView.setText(event.getCountdownText());
         }
     }
 
-    public void startCountdownTimer() {
+
+public void startCountdownTimer() {
+    if (handler != null) {
         handler.postDelayed(runnable, 0);
     }
+}
 
     public void stopCountdownTimer() {
-        handler.removeCallbacks(runnable);
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+        }
     }
-
     private void updateCountdownTimers() {
         // Get the current time
         long currentTime = System.currentTimeMillis();

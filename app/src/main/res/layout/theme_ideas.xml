@@ -45,7 +45,7 @@
         android:text="Close"
         android:fontFamily="@font/alegreya_italic"
         android:textColor="@color/white"
-        android:background="@color/peachbutton"
+        android:backgroundTint="@color/peachbutton"
         android:layout_gravity="center"
         android:layout_margin="16dp" />
     <!-- Bottom Navigation View -->
@@ -54,5 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_bottom_navigation"/>
+        app:menu="@menu/menu_bottom_navigation"
+        app:itemTextAppearance="@style/BottomMenuTextStyle"
+        style="@style/CustomBottomNavigationStyle"/>
 </LinearLayout>

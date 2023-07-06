@@ -39,6 +39,7 @@ public class EventDetailPage extends AppCompatActivity {
     private TextView eventBudgetTextView;
     private DatabaseHelper databaseHelper;
     private String eventId;
+    private int eventid;
     private String eventName;
 
     @Override
@@ -54,7 +55,7 @@ public class EventDetailPage extends AppCompatActivity {
         eventBudgetTextView = findViewById(R.id.eventBudgetTextView);
         budgetImage=findViewById(R.id.budgetImageView);
         databaseHelper = new DatabaseHelper(this);
-
+        eventid = Integer.parseInt(eventId);
         // Bottom Navigation View
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
@@ -76,9 +77,11 @@ public class EventDetailPage extends AppCompatActivity {
         addTaskImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openTodoListPage();
+                //openTodoListPage();
             }
+
         });
+ 
 
 
 
@@ -88,6 +91,7 @@ public class EventDetailPage extends AppCompatActivity {
             if (event != null) {
                 updateEventDetails(event);
                 eventId = event.getEventId();
+               // eventId = Integer.valueOf(event.getEventId());
             }
         }
 
@@ -270,10 +274,7 @@ private void triggerConfettiAnimation() {
         alertDialog.show();
     }
 
-    private void openTodoListPage() {
-        Intent intent = new Intent(this, TodoListActivity.class);
-        startActivity(intent);
-    }
+
 
     private void openAddBudgetPage() {
         Intent intent = new Intent(this, BudgetListActivity.class);

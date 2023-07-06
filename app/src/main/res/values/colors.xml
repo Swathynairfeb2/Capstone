@@ -10,5 +10,6 @@
     <color name="purple">#4E376B</color>
     <color name="purpleb">#3E2B59</color>
     <color name="peachbutton">#F78B64</color>
-
+    <color name="bottom_menu_text_color">#FFFFFF</color>
+    <color name="home_background">#FEF0ED</color>  FEF0ED
 </resources>

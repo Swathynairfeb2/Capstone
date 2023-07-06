@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--activity_home.xml-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple">
+    android:background="@color/purpleb">
 
     <!-- ViewPager -->
     <androidx.viewpager.widget.ViewPager
@@ -14,18 +15,69 @@
         android:layout_height="200dp"
         android:background="@color/purpleb" />
 
-    <!-- Events Heading -->
-    <TextView
-        android:id="@+id/eventsHeadingTextView"
+    <!-- Events Heading and Calendar Image -->
+    <LinearLayout
+        android:id="@+id/eventsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:padding="16dp"
-        android:textSize="20sp"
-        android:text="Your Next Events"
-        android:layout_below="@id/viewPager"
-        android:fontFamily="@font/alegreya_italic"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        android:layout_below="@id/viewPager">
+
+        <TextView
+            android:id="@+id/eventsHeadingTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:text="Your Next Events"
+            android:fontFamily="@font/alegreya_italic"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp">
+
+            <ImageView
+                android:id="@+id/currentDateImageView"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:src="@drawable/calendar"
+                android:contentDescription="Current Date Image"
+                android:layout_marginStart="8dp" />
+
+            <!-- Month and Day Text -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/monthTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="JUN"
+                    android:fontFamily="@font/alegreya_italic"
+                    android:textColor="@color/purpleb"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/dayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30"
+                    android:fontFamily="@font/alegreya_italic"
+                    android:textColor="@color/peachbutton"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
+            app:spanCount="1"
             app:layout_constraintTop_toBottomOf="@id/eventsHeadingTextView" />
 
     </ScrollView>
@@ -56,7 +108,7 @@
             android:id="@+id/dynamicImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/home_event1"
+            android:src="@drawable/home_event"
             android:adjustViewBounds="true" />
 
         <nl.dionsegijn.konfetti.KonfettiView
@@ -82,6 +134,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_bottom_navigation"/>
+        app:menu="@menu/menu_bottom_navigation"
+        app:itemTextAppearance="@style/BottomMenuTextStyle"
+        style="@style/CustomBottomNavigationStyle" />
 
 </RelativeLayout>
