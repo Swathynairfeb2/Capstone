@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -16,21 +20,24 @@
         android:theme="@style/Theme.PlanAhead_Capstone"
         tools:targetApi="31">
 
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
+        <!-- FileProvider -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.planahead_capstone.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
-             To get one, follow the directions here:
 
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
+        <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA46S0eqhkMqjzHTHPIIyXvWuDkmL2QEes" />
+            android:value="YOUR_API_KEY" />
 
+        <!-- Activities -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -53,9 +60,11 @@
         <activity android:name=".EventCreationActivity"></activity>
         <activity android:name=".CategoryActivity"></activity>
         <activity android:name=".EventsActivity"></activity>
-   <activity android:name=".EventDetailPage"></activity>
+        <activity android:name=".EventDetailPage"></activity>
         <activity android:name=".TodoListActivity"></activity>
         <activity android:name=".AddTaskActivity"></activity>
+        <activity android:name="InvitationActivity"></activity>
+        <activity android:name=".SendInvitationActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
