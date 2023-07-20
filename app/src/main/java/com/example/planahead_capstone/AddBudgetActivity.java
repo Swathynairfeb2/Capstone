@@ -8,17 +8,32 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.planahead_capstone.DatabaseHelper;
+import com.example.planahead_capstone.R;
+
 public class AddBudgetActivity extends AppCompatActivity {
 
     private EditText budgetNameEditText;
     private EditText budgetAmountEditText;
     private Button addBudgetButton;
     private Button cancelButton;
+    private DatabaseHelper db;
+
+    private  Double realBudget = 0.0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_budget);
+        db = new DatabaseHelper(this);
+        Intent intent = getIntent();
+        if (intent != null) {
+
+            realBudget = Double.valueOf(intent.getIntExtra("realBudget",0));
+
+        }
 
         budgetNameEditText = findViewById(R.id.categoryEditText);
         budgetAmountEditText = findViewById(R.id.budgetAmountEditText);
@@ -35,12 +50,16 @@ public class AddBudgetActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("budgetName", budgetName);
                     intent.putExtra("budgetAmount", Double.parseDouble(budgetAmount));
+                    intent.putExtra("realBudget", realBudget);
+
 
 
                     setResult(RESULT_OK, intent);
                     finish();
                 }
             }
+
+//
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -51,4 +70,5 @@ public class AddBudgetActivity extends AppCompatActivity {
         });
     }
 }
+
 

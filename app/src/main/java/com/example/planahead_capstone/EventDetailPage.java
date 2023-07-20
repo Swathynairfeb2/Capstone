@@ -44,6 +44,7 @@ public class EventDetailPage extends AppCompatActivity {
     UpcomingEvent event;
     private int eventid;
     private String eventName;
+    private double budget=0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,8 +306,14 @@ public class EventDetailPage extends AppCompatActivity {
 
 
     private void openAddBudgetPage() {
+
         Intent intent = new Intent(this, BudgetListActivity.class);
+        intent.putExtra("eventId", eventId);
+        intent.putExtra("budget", budget);
+
         startActivity(intent);
+
+
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

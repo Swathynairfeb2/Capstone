@@ -1,0 +1,23 @@
+<!-- themes.xml (in res/values folder) -->
+<resources>
+    <!-- Base application theme for Light mode -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your light mode theme here -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Add other customizations for light mode -->
+    </style>
+
+    <!-- Application theme for Dark mode -->
+    <style name="AppThemes.Dark" parent="Theme.AppCompat">
+        <!-- Customize your dark mode theme here -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Background color for dark mode -->
+        <item name="android:windowBackground">@color/darkBackground</item>
+        <!-- Text color for dark mode -->
+        <item name="android:textColor">@color/darkText</item>
+
+        <!-- Add other customizations for dark mode -->
+    </style>
+</resources>

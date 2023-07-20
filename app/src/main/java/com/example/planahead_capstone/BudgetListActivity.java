@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,22 +21,48 @@ public class BudgetListActivity extends Activity {
 
     private ListView budgetListView;
     private Button addBudgetButton;
+    private ProgressBar horizontalProgressBar;
+    private TextView percentageTextView;
+    public Double totalSpent = 0.0;
 
     private List<Budget> budget;
     private BudgetTaskAdapter adapter;
+    private DatabaseHelper categoryDBHelper;
+    private String eventId;
+    public Double realBudget;
+
+    public Double percentage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.budget_page);
+        Intent intent = getIntent();
+        categoryDBHelper = new DatabaseHelper(this);
+
+
+        if (intent != null) {
+            eventId = String.valueOf(intent.getIntExtra("eventId", 0));
+            realBudget = intent.getDoubleExtra("budget",0);
+
+        }
+
 
         budgetListView = findViewById(R.id.budgetListView);
         addBudgetButton = findViewById(R.id.addBudgetButton);
+        horizontalProgressBar = findViewById(R.id.horizontalProgressBar);
+        percentageTextView = findViewById(R.id.percentageTextView);
 
         budget = new ArrayList<>();
 
-        adapter = new BudgetTaskAdapter(this, budget);
+        adapter = new BudgetTaskAdapter(this, budget,eventId,realBudget);
+        updateProgressBar();
+
         budgetListView.setAdapter(adapter);
+
+
+
 
         addBudgetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +70,7 @@ public class BudgetListActivity extends Activity {
                 // Start the AddTaskActivity to add a new task
                 Intent intent = new Intent(BudgetListActivity.this, AddBudgetActivity.class);
                 startActivityForResult(intent, 1);
+                intent.putExtra("realbudget", realBudget);
             }
         });
 
@@ -53,16 +82,19 @@ public class BudgetListActivity extends Activity {
             }
 
 
-    });
-
-        budgetListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                budget.remove(position);
-                adapter.notifyDataSetChanged();
-                return true;
-            }
         });
+
+
+    }
+
+    private void updateProgressBar() {
+        calculatePercentage();
+        horizontalProgressBar.setProgress((percentage.intValue()));
+        String percentageText = String.format("%.2f", percentage) + "%";
+        percentageTextView.setText(percentageText);
+    }
+    private void calculatePercentage() {
+        percentage = (totalSpent / realBudget) * 100;
     }
 
     @Override
@@ -72,11 +104,19 @@ public class BudgetListActivity extends Activity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String budgetName = data.getStringExtra("budgetName");
             double budgetAmount = data.getDoubleExtra("budgetAmount", 0.0);
+            int budgetId = data.getIntExtra("budgetId", -1); //new
+            totalSpent += budgetAmount;
+
+            updateProgressBar();
 
             if (budgetName != null && !budgetName.isEmpty()) {
-                Budget budget1 = new Budget(budgetName, budgetAmount);
-                budget.add(budget1);
-                adapter.notifyDataSetChanged();
+                long id = categoryDBHelper.insertBudget(budgetName, budgetAmount, eventId);
+                if (id != -1) {
+                    Budget budget = new Budget((int)id, budgetName, budgetAmount, eventId);
+                    adapter.addBudget(budget);
+
+
+                }
             }
         }
     }

@@ -1,17 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purpleb">
 
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+
+        <ProgressBar
+            android:id="@+id/horizontalProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:progress="50"
+            android:progressTint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/percentageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:text="50%"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </FrameLayout>
+
+
     <ListView
         android:id="@+id/budgetListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="579dp"
         android:layout_above="@+id/addBudgetButton"
-        android:fontFamily="@font/alegreya_italic"
+        android:layout_marginTop="8dp"
         android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp"
+        android:fontFamily="@font/alegreya_italic" />
 
     <Button
         android:id="@+id/addBudgetButton"

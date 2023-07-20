@@ -1,18 +1,29 @@
 package com.example.planahead_capstone;
 
+import static com.example.planahead_capstone.R.id.titleTextView;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.example.planahead_capstone.DatabaseHelper;
 import com.example.planahead_capstone.R;
@@ -93,9 +104,71 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
         TextView taskNameTextView = view.findViewById(R.id.taskNameTextView);
         taskNameTextView.setText(task.getName());
 
+        // Edit button
+        ImageView editButton = view.findViewById(R.id.editButton);
+        editButton.setOnClickListener(v -> showEditDialog(task));
+
         return view;
     }
+    private void showEditDialog(TodoTask task) {
+        // Create a custom dialog to edit the task
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_edit_task, null);
+        builder.setView(dialogView);
 
+        // Find the EditText view by its ID
+        EditText taskEditText = dialogView.findViewById(R.id.taskEditText);
+
+        // Set the initial task name in the EditText
+        taskEditText.setText(task.getName());
+
+        // Set up the buttons for saving or canceling the edit
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newTaskName = taskEditText.getText().toString().trim();
+            if (!newTaskName.isEmpty()) {
+                task.setName(newTaskName);
+                updateTaskName((int) task.getId(), newTaskName);
+                notifyDataSetChanged();
+            } else {
+                Toast.makeText(context, "Task name cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+
+        // Set the dialog background color
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(R.color.purpleb);
+
+        // Customize the button colors
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            Button negativeButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+
+            positiveButton.setTextColor(ContextCompat.getColor(context, R.color.peachbutton));
+            negativeButton.setTextColor(ContextCompat.getColor(context, R.color.peachbutton));
+        });
+
+        // Show the dialog
+        dialog.show();
+    }
+
+
+
+
+    private void updateTaskName(int taskId, String taskName) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_TODO_NAME, taskName);
+
+        String whereClause = DatabaseHelper.COLUMN_TODO_ID + " = ?";
+        String[] whereArgs = {String.valueOf(taskId)};
+
+        db.update(DatabaseHelper.TABLE_TODO, values, whereClause, whereArgs);
+
+        db.close();
+    }
     private void updateTaskCompletion(int taskId, boolean isCompleted) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
@@ -108,6 +181,9 @@ public class TodoTaskAdapter extends ArrayAdapter<TodoTask> {
         db.update(DatabaseHelper.TABLE_TODO, values, whereClause, whereArgs);
 
         db.close();
+
+        // Refresh the task list
+        loadTasksFromDatabase();
     }
 
     private void deleteTask(int taskId) {

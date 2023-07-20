@@ -272,7 +272,8 @@ private List<EventDetails> getUpcomingEvents() {
                             break;
                         case R.id.menu_my_account:
                             // Handle the my account action
-                            Toast.makeText(HomeActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(HomeActivity.this,UserAccountSettings.class);
+                            startActivity(intent);
                             break;
                     }
 

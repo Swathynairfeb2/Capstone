@@ -12,4 +12,14 @@
     <color name="peachbutton">#F78B64</color>
     <color name="bottom_menu_text_color">#FFFFFF</color>
     <color name="home_background">#FEF0ED</color>  FEF0ED
+    <!-- colors.xml (in res/values-night folder) -->
+        <color name="colorPrimary">#303F9F</color>
+        <color name="colorPrimaryDark">#3F51B5</color>
+        <color name="colorAccent">#E91E63</color>
+    <color name="darkBackground">#1C1C1C</color> <!-- Example dark background color -->
+    <color name="darkText">#FFFFFF</color> <!-- Example dark text color -->
+
+    <!-- Add other colors for dark mode -->
+
+
 </resources>

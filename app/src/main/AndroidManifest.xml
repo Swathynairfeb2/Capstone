@@ -7,9 +7,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
 
 
     <application
+        android:name=".CustomTheme"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -68,6 +72,10 @@
         <activity android:name=".AddBudgetActivity"></activity>
         <activity android:name=".ThemeIdeasActivity"></activity>
         <activity android:name=".EditEventActivity"></activity>
+        <activity android:name=".UserAccountSettings"></activity>
+        <activity android:name=".CustomTheme"
+            android:theme="@style/AppTheme">
+        </activity>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -388,17 +388,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_TODO, COLUMN_TODO_ID + " = ?", new String[]{String.valueOf(taskId)});
         db.close();
     }
-    void addGuestToDatabase(String guestName, String email, String phone, String eventId) {
+    public long addGuestToDatabase(String guestName, String email, String phone, String eventId) {
         SQLiteDatabase db = getWritableDatabase();
+
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_NAME, guestName);
-        values.put(DatabaseHelper.COLUMN_EMAIL, email);
-        values.put(DatabaseHelper.COLUMN_PHONE, phone);
-        values.put(DatabaseHelper.COLUMN_EVID, eventId);
-        db.insert(DatabaseHelper.TABLE_GUESTS, null, values);
+        values.put(COLUMN_NAME, guestName);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PHONE, phone);
+        values.put(COLUMN_EVID, eventId);
 
+        long guestId = db.insert(TABLE_GUESTS, null, values);
+        db.close();
 
+        return guestId;
     }
+
     public long insertBudget(String categoryName, double amount,String eventID) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -432,4 +436,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Db.close();
     }
+
+    public Guest getGuestById(String guestId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] projection = {
+                COLUMN_ID,
+                COLUMN_NAME,
+                COLUMN_EMAIL,
+                COLUMN_PHONE,
+                COLUMN_EVID
+        };
+        String selection = COLUMN_ID + " = ?";
+        String[] selectionArgs = {guestId};
+
+        Cursor cursor = db.query(
+                TABLE_GUESTS,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        Guest guest = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            int idColumnIndex = cursor.getColumnIndex(COLUMN_ID);
+            int nameColumnIndex = cursor.getColumnIndex(COLUMN_NAME);
+            int emailColumnIndex = cursor.getColumnIndex(COLUMN_EMAIL);
+            int phoneColumnIndex = cursor.getColumnIndex(COLUMN_PHONE);
+            int eventIdColumnIndex = cursor.getColumnIndex(COLUMN_EVID);
+
+            String id = cursor.getString(idColumnIndex);
+            String name = cursor.getString(nameColumnIndex);
+            String email = cursor.getString(emailColumnIndex);
+            String phone = cursor.getString(phoneColumnIndex);
+            String eventId = cursor.getString(eventIdColumnIndex);
+
+            guest = new Guest(id, name, email, phone, eventId);
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return guest;
+    }
+    public void updateGuest(String guestId, String guestName, String email, String phone, String eventId) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, guestName);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PHONE, phone);
+        values.put(COLUMN_EVID, eventId);
+
+        String selection = COLUMN_ID + " = ?";
+        String[] selectionArgs = {guestId};
+
+        db.update(TABLE_GUESTS, values, selection, selectionArgs);
+
+        db.close();
+    }
+    public void deleteGuest(String guestId) {
+        SQLiteDatabase db = getWritableDatabase();
+        String selection = DatabaseHelper.COLUMN_ID + " = ?";
+        String[] selectionArgs = {guestId};
+        db.delete(DatabaseHelper.TABLE_GUESTS, selection, selectionArgs);
+    }
+
+
 }

@@ -11,6 +11,25 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+            <!-- Background color for dark mode -->
+            <item name="android:windowBackground">@color/darkBackground</item>
+            <!-- Text color for dark mode -->
+            <item name="android:textColor">@color/darkText</item>
+            <!-- Any other customizations for dark mode -->
+
         <!-- Customize your theme here. -->
+
+
+        </style>
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <!-- Customize your dark mode theme here -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Background color for dark mode -->
+        <item name="android:windowBackground">@color/darkBackground</item>
+        <!-- Text color for dark mode -->
+        <item name="android:textColor">@color/darkText</item>
+
+        <!-- Add other customizations for dark mode -->
     </style>
+
 </resources>

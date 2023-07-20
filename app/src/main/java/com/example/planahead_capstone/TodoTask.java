@@ -30,4 +30,8 @@ public class TodoTask {
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
+
+    public void setName(String newTaskName) {
+        this.name=newTaskName;
+    }
 }
