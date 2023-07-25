@@ -44,8 +44,7 @@ public class EventDetailPage extends AppCompatActivity {
     UpcomingEvent event;
     private int eventid;
     private String eventName;
-    private double budget=0.0;
-
+    private Double budget = 0.0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +69,14 @@ public class EventDetailPage extends AppCompatActivity {
         budgetImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddBudgetPage();
+                 openAddBudgetPage();
             }
         });
         ImageView eventOptionImage = findViewById(R.id.eventoption);
         eventOptionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupWindow(v);
+                 showPopupWindow(v);
             }
         });
 
@@ -107,7 +106,7 @@ public class EventDetailPage extends AppCompatActivity {
 
         Intent intent1 = getIntent();
         if (intent1 != null) {
-            String eventId = intent1.getStringExtra("eventId"); // Retrieve the eventId as a String extra
+           String eventId = intent1.getStringExtra("eventId"); // Retrieve the eventId as a String extra
             EventDetails event1 = intent1.getParcelableExtra("events"); // Retrieve the entire EventDetails object as a Parcelable extra (optional)
 
             if (event1 != null) {
@@ -123,6 +122,7 @@ public class EventDetailPage extends AppCompatActivity {
     private void updateEventDetails(UpcomingEvent event) {
         if (event != null) {
             eventId = event.getEventId();
+            budget = Double.valueOf(event.getEventBudget());
             String eventName = event.getEventName();
             String eventLocation = event.getEventLocation();
             String eventDate = event.getEventDate();
@@ -305,16 +305,16 @@ public class EventDetailPage extends AppCompatActivity {
 
 
 
-    private void openAddBudgetPage() {
 
-        Intent intent = new Intent(this, BudgetListActivity.class);
-        intent.putExtra("eventId", eventId);
-        intent.putExtra("budget", budget);
+private void openAddBudgetPage() {
+    Intent intent = new Intent(this, BudgetListActivity.class);
+    intent.putExtra("eventId", Integer.parseInt(eventId)); // Convert eventId to int
+    intent.putExtra("budget", budget);
+    startActivity(intent);
+}
 
-        startActivity(intent);
 
 
-    }
     private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override

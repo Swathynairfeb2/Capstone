@@ -38,6 +38,7 @@
         android:orientation="vertical"
         android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
         android:layout_marginBottom="20dp">
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,10 +50,13 @@
             android:hint="Username"
             android:transitionName="username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,11 +67,13 @@
             android:transitionName="password"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

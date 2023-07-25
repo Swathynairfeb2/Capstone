@@ -416,6 +416,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return budgetId;
     }
+
+//    public long insertBudget(String categoryName, double amount, int eventId) {
+//        SQLiteDatabase db = getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_BUDGET_CATEGORY_NAME, categoryName);
+//        values.put(COLUMN_BUDGET_AMOUNT, amount);
+//        values.put(COLUMN_BUDGET_EVENT_ID, eventId); // Pass the eventId as an integer
+//
+//        long budgetId = db.insert(TABLE_BUDGET, null, values);
+//        db.close();
+//
+//        return budgetId;
+//    }
+
+
     public void updateBudget(int budgetID,String budgetName, double amount) {
         SQLiteDatabase db = getWritableDatabase();
 

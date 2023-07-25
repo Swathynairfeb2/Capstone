@@ -1,29 +1,3 @@
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:background="@color/purple"-->
-<!--    android:orientation="vertical">-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/editOption"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fontFamily="@font/alegreya_italic"-->
-<!--        android:textColor="@android:color/white"-->
-<!--        android:text="Edit"-->
-<!--        android:padding="8dp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/deleteOption"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fontFamily="@font/alegreya_italic"-->
-<!--        android:textColor="@android:color/white"-->
-<!--        android:text="Delete"-->
-<!--        android:padding="8dp" />-->
-
-<!--</LinearLayout>-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

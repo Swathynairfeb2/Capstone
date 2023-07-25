@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/categoryEditText"
         android:layout_marginTop="16dp"
-        android:hint="Enter budget amount"
+        android:hint="Enter expense amount"
         android:inputType="number"
         android:fontFamily="@font/alegreya_italic"
         android:textColorHint="@color/white"
@@ -35,7 +35,7 @@
         android:layout_below="@id/budgetAmountEditText"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:text="Add budget"
+        android:text="Add Expense"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/peachbutton"
         android:fontFamily="@font/alegreya_italic" />
