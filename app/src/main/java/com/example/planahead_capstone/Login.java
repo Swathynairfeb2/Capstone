@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
     TextView slogan, text;
     TextInputLayout username, password;
     DatabaseHelper databaseHelper;
+    int userId = -1; // Default value if user not found
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class Login extends AppCompatActivity {
 
                 if (validateLogin(user, pwd)) {
                     Intent homeIntent = new Intent(Login.this, HomeActivity.class);
+                    homeIntent.putExtra("userId", userId);
                     startActivity(homeIntent);
                 } else {
                     Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
@@ -80,10 +82,17 @@ public class Login extends AppCompatActivity {
 
     private boolean validateLogin(String username, String password) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String[] columns = {"username"};
+        String[] columns = {"id"}; // Retrieve the user id column
+        //String[] columns = {"username"};
         String selection = "username = ? AND password = ?";
         String[] selectionArgs = {username, password};
         Cursor cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex("id");
+            if (columnIndex >= 0) {
+                userId = cursor.getInt(columnIndex);
+            }
+        }
         int count = cursor.getCount();
         cursor.close();
         return count > 0;

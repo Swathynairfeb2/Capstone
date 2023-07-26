@@ -14,10 +14,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 4; // Increment the version number
 
     // User table
-    private static final String TABLE_USERS = "users";
-    private static final String COLUMN_USER_ID = "id";
+    public static final String TABLE_USERS = "users";
+    public static final String COLUMN_USER_ID = "id";
     private static final String COLUMN_USERNAME = "username";
-    private static final String COLUMN_PASSWORD = "password";
+    public static final String COLUMN_PASSWORD = "password";
 
     // Events table
     private static final String TABLE_EVENTS = "events";
@@ -60,6 +60,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_BUDGET_CATEGORY_NAME = "Budget_category_name";
     public static final String COLUMN_BUDGET_AMOUNT = "amount";
     public static final String COLUMN_BUDGET_EVENT_ID = "eventId";
+
+    //user details table
+
+    public static final String TABLE_USER_DETAILS = "userdetails";
+    public static final String COLUMN_UID = "uid";
+    public static final String COLUMN_FIRST_NAME = "firstname";
+    public static final String COLUMN_LAST_NAME = "lastname";
+    public static final String COLUMN_UEMAIL = "email";
+    public static final String COLUMN_UPHONE = "phone";
+    public static final String COLUMN_UUSER_ID = "id"; // Foreign key to the users table
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -118,6 +129,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_TABLE_GUESTS);
 
+        String CREATE_TABLE_USER_DETAILS =
+                "CREATE TABLE " + TABLE_USER_DETAILS + " (" +
+                        COLUMN_UID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        COLUMN_FIRST_NAME + " TEXT," +
+                        COLUMN_LAST_NAME + " TEXT," +
+                        COLUMN_UEMAIL + " TEXT," +
+                        COLUMN_UPHONE + " TEXT," +
+                        COLUMN_USER_ID + " INTEGER)";
+        db.execSQL(CREATE_TABLE_USER_DETAILS);
 
     }
 
@@ -130,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GUESTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_DETAILS);
         onCreate(db);
     }
 
@@ -417,19 +438,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return budgetId;
     }
 
-//    public long insertBudget(String categoryName, double amount, int eventId) {
-//        SQLiteDatabase db = getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_BUDGET_CATEGORY_NAME, categoryName);
-//        values.put(COLUMN_BUDGET_AMOUNT, amount);
-//        values.put(COLUMN_BUDGET_EVENT_ID, eventId); // Pass the eventId as an integer
-//
-//        long budgetId = db.insert(TABLE_BUDGET, null, values);
-//        db.close();
-//
-//        return budgetId;
-//    }
 
 
     public void updateBudget(int budgetID,String budgetName, double amount) {

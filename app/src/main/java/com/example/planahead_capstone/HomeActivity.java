@@ -1,6 +1,7 @@
 package com.example.planahead_capstone;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,11 +43,21 @@ public class HomeActivity extends AppCompatActivity {
     private EventDetails todaysEvent; // Track today's event
     // Declare the ConfettiView
     private KonfettiView confettiView;
+    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Intent intent = getIntent();
+        if (intent != null) {
+            userId = intent.getIntExtra("userId", userId);
+            if (userId != 0) {
+                Toast.makeText(HomeActivity.this, "userid is :"+userId, Toast.LENGTH_SHORT).show();
+
+
+            }
+        }
 
         // Find the currentDateImageView in the layout
         ImageView currentDateImageView = findViewById(R.id.currentDateImageView);
@@ -132,35 +143,35 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-private List<EventDetails> getUpcomingEvents() {
-    List<EventDetails> upcomingEvents = new ArrayList<>();
+    private List<EventDetails> getUpcomingEvents() {
+        List<EventDetails> upcomingEvents = new ArrayList<>();
 
-    DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-    List<EventDetails> allEvents = databaseHelper.getUpcomingEvents();
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        List<EventDetails> allEvents = databaseHelper.getUpcomingEvents();
 
-    // Get the current date and time
-    Calendar currentDateTime = Calendar.getInstance();
+        // Get the current date and time
+        Calendar currentDateTime = Calendar.getInstance();
 
-    // Iterate through all events
-    for (EventDetails event : allEvents) {
-        String eventDateTime = event.getEventDate() + " " + event.getEventTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
+        // Iterate through all events
+        for (EventDetails event : allEvents) {
+            String eventDateTime = event.getEventDate() + " " + event.getEventTime();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
 
-        try {
-            // Parse the event date and time
-            Date eventDate = dateFormat.parse(eventDateTime);
+            try {
+                // Parse the event date and time
+                Date eventDate = dateFormat.parse(eventDateTime);
 
-            // Compare the event date and time with the current date and time
-            if (eventDate != null && eventDate.after(currentDateTime.getTime())) {
-                upcomingEvents.add(event);
+                // Compare the event date and time with the current date and time
+                if (eventDate != null && eventDate.after(currentDateTime.getTime())) {
+                    upcomingEvents.add(event);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-    }
 
-    return upcomingEvents;
-}
+        return upcomingEvents;
+    }
 
     private List<EventDetails> getEventsForTodayAndTomorrow() {
         List<EventDetails> events = new ArrayList<>();
@@ -273,6 +284,7 @@ private List<EventDetails> getUpcomingEvents() {
                         case R.id.menu_my_account:
                             // Handle the my account action
                             intent = new Intent(HomeActivity.this,UserAccountSettings.class);
+                            intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                     }
