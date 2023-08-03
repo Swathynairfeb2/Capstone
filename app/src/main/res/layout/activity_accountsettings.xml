@@ -169,7 +169,7 @@
                 android:id="@+id/logoutSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:padding="16dp">
 
                 <Button
@@ -181,6 +181,18 @@
                     android:backgroundTint="@color/peachbutton"
                     android:fontFamily="@font/alegreya_italic"
                     android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/deleteAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:padding="8dp"
+                    android:text="Delete Account"
+                    android:backgroundTint="@color/peachbutton"
+                    android:fontFamily="@font/alegreya_italic"
+                    android:textColor="@android:color/white" />
+
 
             </LinearLayout>
 

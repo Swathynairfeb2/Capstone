@@ -76,34 +76,7 @@ public class EditEventActivity extends AppCompatActivity {
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
 
-        // Set the event date when the date EditText is clicked
-        //eventDateEditText.setOnClickListener(new View.OnClickListener() {
-//        imageViewDateIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(
-//                        EditEventActivity.this,
-//                        datePickerListener,
-//                        year, month, day);
-//                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-//                datePickerDialog.show();
-//            }
-//
-//        });
-//
-//
-//        // Set the event time when the time EditText is clicked
-//        //eventTimeEditText.setOnClickListener(new View.OnClickListener() {
-//        imageViewTimeIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TimePickerDialog timePickerDialog = new TimePickerDialog(
-//                        EditEventActivity.this,
-//                        timePickerListener,
-//                        hour, minute, false);
-//                timePickerDialog.show();
-//            }
-//        });
+
         imageViewDateIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,7 +235,8 @@ public class EditEventActivity extends AppCompatActivity {
                             break;
                         case R.id.menu_my_account:
                             // Handle the my account action
-                            Toast.makeText(EditEventActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(EditEventActivity.this, UserAccountSettings.class);
+                            startActivity(intent);
                             break;
                     }
 

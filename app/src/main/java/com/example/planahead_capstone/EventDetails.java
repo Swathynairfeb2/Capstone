@@ -17,6 +17,7 @@ public class EventDetails implements Parcelable {
     private String eventTime;
     private String eventBudget;
     private String countdownText; // Modified field for countdown text
+
     public EventDetails(String eventId, String eventName, String eventLocation, String eventDate, String eventTime, String eventBudget) {
         this.eventId = eventId;
         this.eventName = eventName;
@@ -54,6 +55,8 @@ public class EventDetails implements Parcelable {
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
+
+
 
     public String getEventName() {
         return eventName;

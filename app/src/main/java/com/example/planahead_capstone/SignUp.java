@@ -1,8 +1,6 @@
 package com.example.planahead_capstone;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -43,13 +41,13 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(SignUp.this, "Please fill the form", Toast.LENGTH_SHORT).show();
                 } else {
                     if (pwd.equals(cnf_pwd)) {
-                        boolean success = registerUser(user, pwd, cnf_pwd); // Pass the third argument
+                        boolean success = registerUser(user, pwd, cnf_pwd);
                         if (success) {
                             Toast.makeText(SignUp.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignUp.this, Login.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(SignUp.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUp.this, "Registration failed. Only one user allowed.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(SignUp.this, "Please enter the same password", Toast.LENGTH_SHORT).show();
@@ -57,33 +55,6 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         });
-
-
-//        signUp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String user = username.getEditText().getText().toString().trim();
-//                String pwd = password.getEditText().getText().toString().trim();
-//                String cnf_pwd = cpassword.getEditText().getText().toString().trim();
-//
-//                if (user.isEmpty() || pwd.isEmpty() || cnf_pwd.isEmpty()) {
-//                    Toast.makeText(SignUp.this, "Please fill the form", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    if (pwd.equals(cnf_pwd)) {
-//                        boolean success = registerUser(user, pwd);
-//                        if (success) {
-//                            Toast.makeText(SignUp.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(SignUp.this, Login.class);
-//                            startActivity(intent);
-//                        } else {
-//                            Toast.makeText(SignUp.this, "Registration failed", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        Toast.makeText(SignUp.this, "Please enter the same password", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-//        });
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,38 +65,30 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-//    public boolean registerUser(String username, String password) {
-//        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put("username", username);
-//        values.put("password", password);
-//
-//        long result = db.insert("users", null, values);
-//        db.close();
-//
-//        return result != -1;
-//    }
-// ...
-
     public boolean registerUser(String username, String password, String confirmPassword) {
         if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Passwords do not match. Registration failed.", Toast.LENGTH_SHORT).show();
             return false; // Passwords don't match, registration failed
         }
 
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        // Check if a user already exists in the table
+        int userCount = databaseHelper.getUsersCount();
+        if (userCount > 0) {
+            Toast.makeText(this, "Another user already exists. Only one user is allowed.", Toast.LENGTH_SHORT).show();
+            return false; // Another user already exists, registration failed
+        }
 
-        ContentValues values = new ContentValues();
-        values.put("username", username);
-        values.put("password", password);
+        boolean success = databaseHelper.insertUser(username, password);
+        if (success) {
+            Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SignUp.this, Login.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
+        }
 
-        long result = db.insert("users", null, values);
-        db.close();
-
-        return result != -1;
+        return success;
     }
-
-
 
 
 }

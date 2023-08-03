@@ -34,11 +34,22 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
     private ImageView addCategoryImageView;
     private DatabaseHelper categoryDBHelper;
     private RecyclerView categoryRecyclerView;
+    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        Intent intent1 = getIntent();
+        if (intent1 != null) {
+            userId = intent1.getIntExtra("userId", 0);
+            if (userId != 0) {
+                Toast.makeText(CategoryActivity.this, "userid is :"+userId, Toast.LENGTH_SHORT).show();
+
+
+            }
+        }
 
         categoryDBHelper = new DatabaseHelper(this);
 
@@ -124,7 +135,9 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
     @Override
     public void onCategoryClick(Category category) {
         Intent intent = new Intent(this, EventCreationActivity.class);
-        intent.putExtra("categoryId", category.getId()); // Pass the category ID
+        intent.putExtra("categoryId", category.getId());
+        intent.putExtra("userId", userId);
+        // Pass the category ID
         startActivity(intent);
     }
 
@@ -215,21 +228,27 @@ public void onCategoryOptionClick(Category category) {
                         case R.id.menu_home:
                             // Handle the home action
                             intent = new Intent(CategoryActivity.this, HomeActivity.class);
+                        //    intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                         case R.id.menu_categories:
                             // Handle the categories action
                             intent = new Intent(CategoryActivity.this, CategoryActivity.class);
+                        //    intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                         case R.id.menu_my_events:
-                            // Start the EventCreationActivity
+
                             intent = new Intent(CategoryActivity.this, EventsActivity.class);
+                         //   intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                         case R.id.menu_my_account:
                             // Handle the my account action
-                            Toast.makeText(CategoryActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(CategoryActivity.this, UserAccountSettings.class);
+                          //  intent.putExtra("userId", userId);
+                            startActivity(intent);
+
                             break;
                     }
 

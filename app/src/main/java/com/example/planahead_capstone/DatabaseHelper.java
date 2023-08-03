@@ -1,3 +1,4 @@
+
 package com.example.planahead_capstone;
 
 import android.content.ContentValues;
@@ -61,17 +62,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_BUDGET_AMOUNT = "amount";
     public static final String COLUMN_BUDGET_EVENT_ID = "eventId";
 
-    //user details table
-
-    public static final String TABLE_USER_DETAILS = "userdetails";
+public static final String TABLE_USER_DETAILS = "userdetails";
     public static final String COLUMN_UID = "uid";
     public static final String COLUMN_FIRST_NAME = "firstname";
     public static final String COLUMN_LAST_NAME = "lastname";
     public static final String COLUMN_UEMAIL = "email";
     public static final String COLUMN_UPHONE = "phone";
+    public static final String COLUMN_PROFILE_IMAGE_PATH = "profile_image_path"; // New column to store the image file path
     public static final String COLUMN_UUSER_ID = "id"; // Foreign key to the users table
-
-
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -129,6 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_TABLE_GUESTS);
 
+
         String CREATE_TABLE_USER_DETAILS =
                 "CREATE TABLE " + TABLE_USER_DETAILS + " (" +
                         COLUMN_UID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -136,6 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_LAST_NAME + " TEXT," +
                         COLUMN_UEMAIL + " TEXT," +
                         COLUMN_UPHONE + " TEXT," +
+                        COLUMN_PROFILE_IMAGE_PATH + " TEXT," + // New column to store the image file path
                         COLUMN_USER_ID + " INTEGER)";
         db.execSQL(CREATE_TABLE_USER_DETAILS);
 
@@ -437,9 +437,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return budgetId;
     }
-
-
-
     public void updateBudget(int budgetID,String budgetName, double amount) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -528,6 +525,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selection = DatabaseHelper.COLUMN_ID + " = ?";
         String[] selectionArgs = {guestId};
         db.delete(DatabaseHelper.TABLE_GUESTS, selection, selectionArgs);
+    }
+
+    // Method to check if there is any user in the users table
+    public int getUsersCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_USERS, null);
+        int count = 0;
+        if (cursor != null && cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+            cursor.close();
+        }
+        db.close();
+        return count;
+    }
+    public boolean insertUser(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check if a user already exists in the table
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_USERS, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int count = cursor.getInt(0);
+            cursor.close();
+
+            // If a user already exists, do not insert another user
+            if (count > 0) {
+                return false;
+            }
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USERNAME, username);
+        contentValues.put(COLUMN_PASSWORD, password);
+        long result = db.insert(TABLE_USERS, null, contentValues);
+        return result != -1;
+    }
+
+    // Method to delete user data from the users table
+    public void deleteUserData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_USERS,null,null);
+        db.delete(TABLE_USER_DETAILS, null, null);
+        db.delete(TABLE_CATEGORY,null,null);
+        db.delete(TABLE_EVENTS,null,null);
+        db.delete(TABLE_TODO,null,null);
+        db.delete(TABLE_BUDGET,null,null);
+        db.delete(TABLE_EVENT_CATEGORY,null,null);
+        db.delete(TABLE_GUESTS,null,null);
+        db.close();
     }
 
 

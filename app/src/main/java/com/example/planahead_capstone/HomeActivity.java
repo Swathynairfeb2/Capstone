@@ -58,7 +58,15 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         }
-
+// Check if the user is logged in
+        if (userId == 0) {
+            // User is not logged in, redirect to the Login page
+            Intent intent1 = new Intent(HomeActivity.this, Login.class);
+            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            return; // Return to prevent further execution of the activity
+        }
         // Find the currentDateImageView in the layout
         ImageView currentDateImageView = findViewById(R.id.currentDateImageView);
         TextView monthTextView = findViewById(R.id.monthTextView);
@@ -284,7 +292,7 @@ public class HomeActivity extends AppCompatActivity {
                         case R.id.menu_my_account:
                             // Handle the my account action
                             intent = new Intent(HomeActivity.this,UserAccountSettings.class);
-                            intent.putExtra("userId", userId);
+                          //  intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                     }

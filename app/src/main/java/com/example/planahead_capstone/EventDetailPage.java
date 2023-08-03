@@ -339,7 +339,8 @@ private void openAddBudgetPage() {
                             break;
                         case R.id.menu_my_account:
                             // Handle the my account action
-                            Toast.makeText(EventDetailPage.this, "My Account", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(EventDetailPage.this, UserAccountSettings.class);
+                            startActivity(intent);
                             break;
                     }
 

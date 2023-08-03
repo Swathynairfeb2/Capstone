@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -35,9 +40,10 @@ public class UserAccountSettings extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private EditText firstNameEditText, lastNameEditText, emailEditText, phoneEditText;
-    private Button saveButton, logoutButton;
+    private Button saveButton, logoutButton,deleteAccount;
     ImageView imgChangePassword,profileImageView;
     private static final int REQUEST_IMAGE_PICK = 1;
+    private String profileImagePath;
     private SwitchCompat darkModeSwitch;
     private CustomTheme app;
     private Intent intent;
@@ -62,27 +68,11 @@ public class UserAccountSettings extends AppCompatActivity {
         phoneEditText = findViewById(R.id.phoneEditText);
         saveButton = findViewById(R.id.saveButton);
         logoutButton = findViewById(R.id.logoutButton);
+        deleteAccount = findViewById(R.id.deleteAccount);
         imgChangePassword = findViewById(R.id.imgChangePassword);
         darkModeSwitch = findViewById(R.id.darkModeSwitch);
         editImage = findViewById(R.id.editImg);
         saveButton.setVisibility(View.INVISIBLE);
-        intent = getIntent();
-        if (intent != null) {
-            userId = intent.getIntExtra("userId", userId);
-            if (userId != 0) {
-                // Fetch user data from the database and populate the UI elements
-                fetchUserDataFromDB(userId);
-                Toast.makeText(UserAccountSettings.this, "userid is :"+userId, Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(UserAccountSettings.this, "userid not found", Toast.LENGTH_SHORT).show();
-
-            }
-        }
-
-
-        // Get a reference to the custom Application class
         app = (CustomTheme) getApplication();
 
         profileImageView.setOnClickListener(new View.OnClickListener() {
@@ -129,49 +119,100 @@ public class UserAccountSettings extends AppCompatActivity {
                 showChangePasswordDialog();
             }
         });
-        // Set onClickListener for the logoutButton
+
+// Set onClickListener for the logoutButton
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserAccountSettings.this, Login.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }
         });
-    }
-    // Method to fetch user data from the database
-    public void fetchUserDataFromDB(int userId) {
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String[] columns = {DatabaseHelper.COLUMN_FIRST_NAME, DatabaseHelper.COLUMN_LAST_NAME,
-                DatabaseHelper.COLUMN_UEMAIL, DatabaseHelper.COLUMN_UPHONE};
-        String selection = DatabaseHelper.COLUMN_UUSER_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(userId)};
-        Cursor cursor = db.query(DatabaseHelper.TABLE_USER_DETAILS, columns, selection, selectionArgs, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            int fnameColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_FIRST_NAME);
-            int lnameColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_LAST_NAME);
-            int emailColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_UEMAIL);
-            int phoneColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_UPHONE);
+        // Set onClickListener for the deleteAccountButton
+        deleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteConfirmationDialog();
+            }
+        });
 
-            String firstName = cursor.getString(fnameColumnIndex);
-            String lastName = cursor.getString(lnameColumnIndex);
-            String email = cursor.getString(emailColumnIndex);
-            String phone = cursor.getString(phoneColumnIndex);
-
-            // Update the EditTexts with the fetched data
-            firstNameEditText.setText(firstName);
-            lastNameEditText.setText(lastName);
-            emailEditText.setText(email);
-            phoneEditText.setText(phone);
-        }
-
-        if (cursor != null) {
-            cursor.close();
-        }
-        db.close();
+        fetchUserDataFromDB();
     }
 
+
+public void fetchUserDataFromDB() {
+    SQLiteDatabase db = databaseHelper.getReadableDatabase();
+    String[] columns = {DatabaseHelper.COLUMN_FIRST_NAME, DatabaseHelper.COLUMN_LAST_NAME,
+            DatabaseHelper.COLUMN_UEMAIL, DatabaseHelper.COLUMN_UPHONE, DatabaseHelper.COLUMN_PROFILE_IMAGE_PATH};
+    Cursor cursor = db.query(DatabaseHelper.TABLE_USER_DETAILS, columns, null, null, null, null, null);
+
+    if (cursor.moveToFirst()) {
+        int fnameColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_FIRST_NAME);
+        int lnameColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_LAST_NAME);
+        int emailColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_UEMAIL);
+        int phoneColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_UPHONE);
+        int profileImageColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_PROFILE_IMAGE_PATH);
+
+        String firstName = cursor.getString(fnameColumnIndex);
+        String lastName = cursor.getString(lnameColumnIndex);
+        String email = cursor.getString(emailColumnIndex);
+        String phone = cursor.getString(phoneColumnIndex);
+        profileImagePath = cursor.getString(profileImageColumnIndex);
+
+        // Update the EditTexts with the fetched data
+        firstNameEditText.setText(firstName);
+        lastNameEditText.setText(lastName);
+        emailEditText.setText(email);
+        phoneEditText.setText(phone);
+
+        // Load and display the profile image from the file path
+        if (profileImagePath != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(profileImagePath);
+            profileImageView.setImageBitmap(bitmap);
+        }
+    }
+
+    cursor.close();
+    db.close();
+}
+
+    // Method to delete user data from the database
+    private void deleteUserAccount() {
+        // Delete the user data from the database
+        databaseHelper.deleteUserData();
+
+        // Redirect the user to the signup screen after account deletion
+        Intent intent = new Intent(UserAccountSettings.this, SignUp.class);
+        startActivity(intent);
+        finish();
+    }
+
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Account");
+        builder.setMessage("Are you sure you want to delete your account?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // User clicked the "Delete" button, proceed with account deletion
+
+                deleteUserAccount();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // User clicked the "Cancel" button, dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     private void saveUserDataToDB() {
         // Get the edited data from the EditTexts
         String firstName = firstNameEditText.getText().toString();
@@ -179,13 +220,11 @@ public class UserAccountSettings extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
 
-
         // Validate phone number
         if (!isValidPhoneNumber(phone)) {
             phoneEditText.setError("Invalid phone number format");
             phoneEditText.requestFocus();
         }
-
         // Validate email
         else if (!isValidEmail(email)) {
             emailEditText.setError("Invalid email");
@@ -193,8 +232,18 @@ public class UserAccountSettings extends AppCompatActivity {
         } else {
             toggleEditMode();
 
+            // Convert the profile image Bitmap to a byte array (BLOB)
+            String profileImagePath = null;
+            Bitmap profileImageBitmap = ((BitmapDrawable) profileImageView.getDrawable()).getBitmap();
+            if (profileImageBitmap != null) {
+                // Resize the image to a smaller size (e.g., 200x200 pixels)
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(profileImageBitmap, 200, 200, false);
 
-            // Update the user data in the database based on the userId
+                // Save the resized image to external storage and get the file path
+                profileImagePath = saveImageToExternalStorage(resizedBitmap);
+            }
+
+            // Update the user data in the database (assuming there is only one user)
             SQLiteDatabase db = null;
             try {
                 databaseHelper = new DatabaseHelper(this);
@@ -204,26 +253,21 @@ public class UserAccountSettings extends AppCompatActivity {
                 values.put(DatabaseHelper.COLUMN_LAST_NAME, lastName);
                 values.put(DatabaseHelper.COLUMN_UEMAIL, email);
                 values.put(DatabaseHelper.COLUMN_UPHONE, phone);
+                values.put(DatabaseHelper.COLUMN_PROFILE_IMAGE_PATH, profileImagePath); // Save the profile image path
 
-                String whereClause = DatabaseHelper.COLUMN_UUSER_ID + " = ?";
-                String[] whereArgs = {String.valueOf(userId)};
-
-                // Check if the user ID exists in the database
-                Cursor cursor = db.query(DatabaseHelper.TABLE_USER_DETAILS, null, whereClause, whereArgs, null, null, null);
+                // Check if the user details already exist in the database
+                Cursor cursor = db.query(DatabaseHelper.TABLE_USER_DETAILS, null, null, null, null, null, null);
                 boolean userExists = cursor != null && cursor.getCount() > 0;
+                cursor.close();
+
                 if (userExists) {
-                    // User ID exists, perform update
-                    db.update(DatabaseHelper.TABLE_USER_DETAILS, values, whereClause, whereArgs);
+                    // User details exist, perform update
+                    db.update(DatabaseHelper.TABLE_USER_DETAILS, values, null, null);
                     Toast.makeText(UserAccountSettings.this, "User data updated successfully", Toast.LENGTH_SHORT).show();
                 } else {
-                    // User ID doesn't exist, perform insert
-                    values.put(DatabaseHelper.COLUMN_UUSER_ID, userId);
+                    // User details don't exist, perform insert
                     db.insert(DatabaseHelper.TABLE_USER_DETAILS, null, values);
                     Toast.makeText(UserAccountSettings.this, "User data added successfully", Toast.LENGTH_SHORT).show();
-                }
-
-                if (cursor != null) {
-                    cursor.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -235,6 +279,26 @@ public class UserAccountSettings extends AppCompatActivity {
             }
         }
     }
+
+
+
+    private String saveImageToExternalStorage(Bitmap bitmap) {
+        String imagePath = null;
+        try {
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File imageFile = File.createTempFile("profile_", ".png", storageDir);
+            imagePath = imageFile.getAbsolutePath();
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imagePath;
+    }
+
 
 
     private void toggleEditMode() {
@@ -253,149 +317,150 @@ public class UserAccountSettings extends AppCompatActivity {
             saveButton.setVisibility(View.INVISIBLE);
         }
     }
-    private void showChangePasswordDialog() {
-        // Create an AlertDialog builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        // Get the layout inflater
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_change_password, null);
-        builder.setView(dialogView);
+private void showChangePasswordDialog() {
+    // Create an AlertDialog builder
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        // Add action buttons to the dialog
-        builder.setPositiveButton("Change", null); // We'll add the click listener later
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle the "Cancel" button click here (dismiss the dialog)
-                dialog.dismiss();
+    // Get the layout inflater
+    LayoutInflater inflater = getLayoutInflater();
+    View dialogView = inflater.inflate(R.layout.dialog_change_password, null);
+    builder.setView(dialogView);
+
+    // Add action buttons to the dialog
+    builder.setPositiveButton("Change", null); // We'll add the click listener later
+    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            // Handle the "Cancel" button click here (dismiss the dialog)
+            dialog.dismiss();
+        }
+    });
+
+    // Create the dialog
+    final AlertDialog dialog = builder.create();
+
+    // Show the dialog
+    dialog.show();
+
+    // Set the background color of the dialog window
+    int backgroundColor = getResources().getColor(R.color.purpleb);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
+
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.peachbutton));
+    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.peachbutton));
+
+    // Get the positive button from the dialog
+    final Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+    positiveButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Handle the "Change" button click here
+            // Get references to the EditText fields in the custom dialog layout
+            EditText oldPasswordEditText = dialogView.findViewById(R.id.oldPasswordEditText);
+            EditText newPasswordEditText = dialogView.findViewById(R.id.newPasswordEditText);
+            EditText confirmPasswordEditText = dialogView.findViewById(R.id.confirmPasswordEditText);
+
+            // You can get the new password and confirm password from the EditText views in the dialog
+            String oldPassword = oldPasswordEditText.getText().toString();
+            String newPassword = newPasswordEditText.getText().toString();
+            String confirmPassword = confirmPasswordEditText.getText().toString();
+
+            if (oldPassword.isEmpty()) {
+                oldPasswordEditText.setError("Old Password cannot be empty");
+                oldPasswordEditText.requestFocus();
+                return;
+            } else if (newPassword.isEmpty()) {
+                newPasswordEditText.setError("New Password cannot be empty");
+                newPasswordEditText.requestFocus();
+                return;
+            } else if (confirmPassword.isEmpty()) {
+                confirmPasswordEditText.setError("Confirm Password cannot be empty");
+                confirmPasswordEditText.requestFocus();
+                return;
             }
-        });
 
-        // Create the dialog
-        final AlertDialog dialog = builder.create();
-
-        // Show the dialog
-        dialog.show();
-
-        // Set the background color of the dialog window
-        int backgroundColor = getResources().getColor(R.color.purpleb);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.peachbutton));
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.peachbutton));
-
-        // Get the positive button from the dialog
-        final Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-
-        positiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle the "Change" button click here
-                // Get references to the EditText fields in the custom dialog layout
-                EditText oldPasswordEditText = dialogView.findViewById(R.id.oldPasswordEditText);
-                EditText newPasswordEditText = dialogView.findViewById(R.id.newPasswordEditText);
-                EditText confirmPasswordEditText = dialogView.findViewById(R.id.confirmPasswordEditText);
-
-
-                // You can get the new password and confirm password from the EditText views in the dialog
-                String oldPassword = oldPasswordEditText.getText().toString();
-                String newPassword = newPasswordEditText.getText().toString();
-                String confirmPassword = confirmPasswordEditText.getText().toString();
-                if (oldPassword.isEmpty()) {
-                    oldPasswordEditText.setError("Old Password cannot be empty");
+            if (isOldPasswordValid(oldPassword) && newPassword.equals(confirmPassword)) {
+                // Update the password in the database
+                updatePasswordInDB( newPassword);
+                Toast.makeText(UserAccountSettings.this, "Password updated successfully", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                // Perform any other action after password change here
+            } else {
+                // Show error messages for invalid passwords
+                if (!isOldPasswordValid(oldPassword)) {
+                    oldPasswordEditText.setError("Invalid old password");
                     oldPasswordEditText.requestFocus();
-                    return;
-                }
-                else if (newPassword.isEmpty()) {
-                    newPasswordEditText.setError("New Password cannot be empty");
-                    newPasswordEditText.requestFocus();
-                    return;
-                } else if (confirmPassword.isEmpty()) {
-                    confirmPasswordEditText.setError("Confirm Password cannot be empty");
-                    confirmPasswordEditText.requestFocus();
-                    return;
-                }
-                if (isOldPasswordValid(oldPassword) && newPassword.equals(confirmPassword)) {
-                    // Update the password in the database
-                    if (userId != 0) {
-                        updatePasswordInDB(userId, newPassword);
-                        Toast.makeText(UserAccountSettings.this, "Password updated successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(UserAccountSettings.this, "User ID not found", Toast.LENGTH_SHORT).show();
-                    }
-
-                    dialog.dismiss();
-                    // Perform any other action after password change here
                 } else {
                     confirmPasswordEditText.setError("Passwords do not match");
                     confirmPasswordEditText.requestFocus();
-                    return;
                 }
             }
-        });
-
-    }
-    // Method to check if the old password matches the one stored in the database
-    private boolean isOldPasswordValid(String oldPassword) {
-
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String[] columns = {DatabaseHelper.COLUMN_PASSWORD};
-        String selection = DatabaseHelper.COLUMN_USER_ID + " = ? AND " + DatabaseHelper.COLUMN_PASSWORD + " = ?";
-        String[] selectionArgs = {String.valueOf(userId), oldPassword};
-        Cursor cursor = db.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
-
-        boolean isOldPasswordValid = cursor != null && cursor.getCount() > 0;
-        if (cursor != null) {
-            cursor.close();
         }
-        db.close();
+    });
+}
 
-        return isOldPasswordValid;
+
+
+private boolean isOldPasswordValid(String oldPassword) {
+    SQLiteDatabase db = databaseHelper.getReadableDatabase();
+    String[] columns = {DatabaseHelper.COLUMN_PASSWORD};
+    String selection = DatabaseHelper.COLUMN_PASSWORD + " = ?";
+    String[] selectionArgs = {oldPassword};
+    Cursor cursor = db.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+
+    boolean isOldPasswordValid = cursor != null && cursor.getCount() > 0;
+    if (cursor != null) {
+        cursor.close();
     }
+    db.close();
+
+    return isOldPasswordValid;
+}
 
     // Method to update the password in the database
-    private void updatePasswordInDB(int userId, String newPassword) {
+    private void updatePasswordInDB(String newPassword) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_PASSWORD, newPassword);
 
-        String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
-        String[] whereArgs = {String.valueOf(userId)};
-
-        db.update(DatabaseHelper.TABLE_USERS, values, whereClause, whereArgs);
+        // Since you have only one user, you don't need to use the userId for update
+        db.update(DatabaseHelper.TABLE_USERS, values, null, null);
         db.close();
     }
-    private void showImageChangeOptionsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View dialogView = inflater.inflate(R.layout.dialog_image_change_options, null);
-        builder.setView(dialogView);
+private void showImageChangeOptionsDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        TextView galleryOptionTextView = dialogView.findViewById(R.id.galleryOptionTextView);
+    LayoutInflater inflater = LayoutInflater.from(this);
+    View dialogView = inflater.inflate(R.layout.dialog_image_change_options, null);
+    builder.setView(dialogView);
 
-        final AlertDialog dialog = builder.create();
-        int backgroundColor = getResources().getColor(R.color.purpleb);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
+    TextView galleryOptionTextView = dialogView.findViewById(R.id.galleryOptionTextView);
+
+    final AlertDialog dialog = builder.create();
+    int backgroundColor = getResources().getColor(R.color.purpleb);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
+
+    // Handle gallery option click
+    galleryOptionTextView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openImageGallery();
+            dialog.dismiss();
+        }
+    });
+
+    dialog.show();
+}
 
 
-        // Handle gallery option click
-        galleryOptionTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImageGallery();
-                dialog.dismiss();
-            }
-        });
+private void openImageGallery() {
+    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    startActivityForResult(intent, REQUEST_IMAGE_PICK);
+}
 
-        dialog.show();
-    }
-
-    private void openImageGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQUEST_IMAGE_PICK);
-    }
 
 
     @Override
@@ -414,17 +479,23 @@ public class UserAccountSettings extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 bitmap = rotateImage(bitmap, rotation);
 
+                // Save the new image to external storage and get the file path
+                profileImagePath = saveImageToExternalStorage(bitmap);
+
+                // Set the rotated bitmap to the profileImageView
                 profileImageView.setImageBitmap(bitmap);
+
+                // Save the updated user data (including the new image path) to the database
+                saveUserDataToDB();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show();
-
         }
     }
+
+
     private boolean isValidEmail(String email) {
         // Perform email validation using regular expressions
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -437,27 +508,28 @@ public class UserAccountSettings extends AppCompatActivity {
         String phoneNumberPattern = "\\d{10}";
         return phoneNumber.matches(phoneNumberPattern);
     }
-    private int getRotationFromExif(Uri imageUri) {
-        int rotation = 0;
-        try {
-            ExifInterface exif = new ExifInterface(imageUri.getPath());
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotation = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotation = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotation = 270;
-                    break;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+private int getRotationFromExif(Uri imageUri) {
+    int rotation = 0;
+    try {
+        ExifInterface exif = new ExifInterface(imageUri.getPath());
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotation = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotation = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotation = 270;
+                break;
         }
-        return rotation;
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+    return rotation;
+}
 
     private int getRotationFromExif(String imagePath) {
         int rotation = 0;
@@ -481,6 +553,7 @@ public class UserAccountSettings extends AppCompatActivity {
         return rotation;
     }
 
+
     private Bitmap rotateImage(Bitmap bitmap, int rotation) {
         if (rotation != 0) {
             Matrix matrix = new Matrix();
@@ -490,4 +563,13 @@ public class UserAccountSettings extends AppCompatActivity {
         return bitmap;
     }
 
+
+@Override
+protected void onResume() {
+    super.onResume();
+    // Fetch and update the user data when the activity is resumed
+    if (userId != 0) {
+        fetchUserDataFromDB();
+    }
+}
 }

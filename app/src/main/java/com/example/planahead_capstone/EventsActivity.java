@@ -29,11 +29,21 @@ public class EventsActivity extends AppCompatActivity {
     private static final String COLUMN_EVENT_TIME = "event_time";
     private static final String COLUMN_EVENT_BUDGET = "event_budget";
     private static final String TABLE_EVENTS = "events";
-
+int userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_upcoming_event);
+        Intent intent1 = getIntent();
+        if (intent1 != null) {
+            userId = intent1.getIntExtra("userId", 0);
+            if (userId != 0) {
+                Toast.makeText(EventsActivity.this, "userid is :"+userId, Toast.LENGTH_SHORT).show();
+
+
+            }
+        }
+
         // Bottom Navigation View
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
@@ -100,6 +110,7 @@ public class EventsActivity extends AppCompatActivity {
         return upcomingEvents;
     }
 
+
     private void displayUpcomingEvents() {
         // Display the upcoming events in a desired way (e.g., RecyclerView, ListView, TextView)
         MyUpcomingEventsAdapter adapter = new MyUpcomingEventsAdapter(upcomingEvents);
@@ -119,15 +130,11 @@ public class EventsActivity extends AppCompatActivity {
         super.onStop();
         adapter.stopCountdownTimer();
     }
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(MenuItem item) {
-                    Fragment selectedFragment = null;
                     Intent intent;
-
                     switch (item.getItemId()) {
                         case R.id.menu_home:
                             // Handle the home action
@@ -140,18 +147,18 @@ public class EventsActivity extends AppCompatActivity {
                             startActivity(intent);
                             break;
                         case R.id.menu_my_events:
-                            // Start the EventCreationActivity
-                            intent = new Intent(EventsActivity.this, EventsActivity.class);
-                            startActivity(intent);
+                            // Do nothing when the user selects "menu_my_events"
                             break;
                         case R.id.menu_my_account:
                             // Handle the my account action
-                            Toast.makeText(EventsActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(EventsActivity.this, UserAccountSettings.class);
+                            startActivity(intent);
                             break;
                     }
 
                     return true;
                 }
             };
+
 }
 

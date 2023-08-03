@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,4 +98,6 @@ public class Login extends AppCompatActivity {
         cursor.close();
         return count > 0;
     }
+
+
 }

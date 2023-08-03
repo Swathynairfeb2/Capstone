@@ -160,7 +160,8 @@ public class ThemeIdeasActivity extends AppCompatActivity {
                             break;
                         case R.id.menu_my_account:
                             // Handle the my account action
-                            Toast.makeText(ThemeIdeasActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(ThemeIdeasActivity.this, UserAccountSettings.class);
+                            startActivity(intent);
                             break;
                     }
 

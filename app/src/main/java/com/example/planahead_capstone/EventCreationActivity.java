@@ -45,11 +45,21 @@ public class EventCreationActivity extends AppCompatActivity {
     private List<Category> categoryList;
     private ArrayAdapter<Category> categoryAdapter;
     private int selectedCategoryId = -1; // Default value for no category selected
-
+    int userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_creation);
+
+        Intent intent1 = getIntent();
+        if (intent1 != null) {
+            userId = intent1.getIntExtra("userId", 0);
+            if (userId != 0) {
+                Toast.makeText(EventCreationActivity.this, "userid is :"+userId, Toast.LENGTH_SHORT).show();
+
+
+            }
+        }
 
         // Initialize views
         editTextEventName = findViewById(R.id.editTextEventName);
@@ -59,7 +69,8 @@ public class EventCreationActivity extends AppCompatActivity {
         editTextEventBudget = findViewById(R.id.editTextEventBudget);
         buttonCreateEvent = findViewById(R.id.buttonCreateEvent);
         spinnerEventCategory = findViewById(R.id.spinnerEventCategory);
-// Retrieve the passed data from the Intent
+
+        // Retrieve the passed data from the Intent
         Intent intent = getIntent();
         if (intent != null) {
             String eventName = intent.getStringExtra("eventName");
@@ -186,9 +197,7 @@ public class EventCreationActivity extends AppCompatActivity {
                 boolean eventSaved = saveEventToDatabase(eventName, eventLocation, eventDate, eventTime, eventBudget);
 
                 if (eventSaved) {
-//                    // Show a toast message to indicate successful event creation
-//                    Toast.makeText(EventCreationActivity.this, "Event created: " + eventName, Toast.LENGTH_SHORT).show();
-                    // Display the Toast
+
                     Toast toast = Toast.makeText(EventCreationActivity.this, "Event created: " + eventName, Toast.LENGTH_SHORT);
 
             // Apply the custom style
@@ -311,17 +320,22 @@ public class EventCreationActivity extends AppCompatActivity {
         }
     }
 
-    private void showDatePicker() {
+
+private void showDatePicker() {
     Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.DAY_OF_MONTH, 1); // Add one day to get tomorrow's date
+
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
     int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
     DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, year, month, dayOfMonth);
-    datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000); // Set the minimum date to today
+
+    // Set the minimum date to tomorrow
+    datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+
     datePickerDialog.show();
 }
-
     private void updateDate(int year, int month, int dayOfMonth) {
         String selectedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", month + 1, dayOfMonth, year);
         textViewEventDate.setText(selectedDate);
@@ -329,12 +343,33 @@ public class EventCreationActivity extends AppCompatActivity {
 
     private void showTimePicker() {
         Calendar calendar = Calendar.getInstance();
-        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        int currentHourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, timePickerListener, hourOfDay, minute, false);
+        TimePickerDialog timePickerDialog;
+
+        // Check if the selected date is today or later
+        Calendar selectedDate = Calendar.getInstance();
+        String eventDate = textViewEventDate.getText().toString();
+        String[] dateParts = eventDate.split("/");
+        int day = Integer.parseInt(dateParts[1]);
+        int month = Integer.parseInt(dateParts[0]) - 1; // Months are zero-based in Calendar
+        int year = Integer.parseInt(dateParts[2]);
+        selectedDate.set(year, month, day);
+
+        if (selectedDate.after(calendar)) {
+            // If the selected date is later than today, allow any time selection
+            timePickerDialog = new TimePickerDialog(this, timePickerListener, currentHourOfDay, currentMinute, false);
+        } else {
+            // If the selected date is today, allow time selection from the current time onwards
+            timePickerDialog = new TimePickerDialog(this, timePickerListener, currentHourOfDay, currentMinute, false);
+            timePickerDialog.updateTime(currentHourOfDay, currentMinute);
+        }
+
         timePickerDialog.show();
     }
+
+
 
     private void updateTime(int hourOfDay, int minute) {
         String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
@@ -361,21 +396,25 @@ public class EventCreationActivity extends AppCompatActivity {
                         case R.id.menu_home:
                             // Handle the home action
                             intent = new Intent(EventCreationActivity.this, HomeActivity.class);
+                           // intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                         case R.id.menu_categories:
                             // Handle the categories action
                             intent = new Intent(EventCreationActivity.this, CategoryActivity.class);
+                            //intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                         case R.id.menu_my_events:
-                            // Start the EventCreationActivity
+
                             intent = new Intent(EventCreationActivity.this, EventsActivity.class);
+                          //  intent.putExtra("userId", userId);
                             startActivity(intent);
                             break;
                         case R.id.menu_my_account:
-                            // Handle the my account action
-                            Toast.makeText(EventCreationActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                            intent = new Intent(EventCreationActivity.this, UserAccountSettings.class);
+                        //    intent.putExtra("userId", userId);
+                            startActivity(intent);
                             break;
                     }
 
